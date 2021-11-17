@@ -11,18 +11,23 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import com.ssafy.happyhouse.model.News;
+
+@RestController
+@RequestMapping("/crawling")
 public class NewsController {
 	
 	public static HashMap<String, String> map;
 
-	@RequestMapping(value = "crawling", method = RequestMethod.GET)
-	public String startCrawl(Model model) throws IOException {
+	@GetMapping
+	public ResponseEntity<ArrayList<News>> startCrawl() throws IOException{
+	//public String startCrawl(Model model) throws IOException {
 		System.out.println("여오나????");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
 		Date currentTime = new Date();
@@ -37,9 +42,7 @@ public class NewsController {
 		String s_from = s_date.replace(".", "");
 		String e_to = e_date.replace(".", "");
 		int page = 1;
-		ArrayList<String> al1 = new ArrayList<>();
-		ArrayList<String> al2 = new ArrayList<>();
-		ArrayList<String> al3 = new ArrayList<>();
+		ArrayList<News> newsList = new ArrayList<>();
 //	       <dt class="tit">
 //	        <a href="https://www.mk.co.kr/news/realestate/view/2021/11/1038972/">한강뷰가 뭐길래…용산·여의도 재건축 진통</a>
 //	       </dt> 
@@ -70,20 +73,22 @@ public class NewsController {
 				//System.out.println("link"+link.text());
 				realURL = link.attr("href");
 				//System.out.println("url"+realURL);
+				newsList.add(new News(realURL, realTITLE, realCONTENT));
 				
-				al1.add(realURL);
-				al2.add(realTITLE);
 			}
+			int idx = 0;
 			for(Element e: blogContent) {
 				realCONTENT = e.text();
-				al3.add(realCONTENT);
+				newsList.get(idx++).setContent(realCONTENT);
 			}
 			page += 10;
 		}
-		model.addAttribute("urls", al1);
-		model.addAttribute("titles", al2);
-		model.addAttribute("contents", al3);
-		return "news";
+		
+		
+//		model.addAttribute("urls", al1);
+//		model.addAttribute("titles", al2);
+//		model.addAttribute("contents", al3);
+		return new ResponseEntity<ArrayList<News>>(newsList ,HttpStatus.OK);
 	}
 	
 }

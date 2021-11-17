@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -30,15 +31,15 @@ import org.xml.sax.SAXException;
 
 import com.ssafy.happyhouse.model.DustDto;
 
-@Controller
+@RestController
+@RequestMapping("/ajax/dustInfo")
 public class DustController {
-	@RequestMapping(value = "dustInfo", method = RequestMethod.GET)
-	public String dustPage() throws IOException{
-		return "dustInfo";
-	}
+//	@RequestMapping(value = "dustInfo", method = RequestMethod.GET)
+//	public String dustPage() throws IOException{
+//		return "dustInfo";
+//	}
 	
-	@ResponseBody
-	@GetMapping("/ajax/dustInfo")
+	@GetMapping
 	public ResponseEntity<List<DustDto>> search() throws ParserConfigurationException, SAXException, IOException { // 네이버랑 통신해서 데이터 받아오자. 마치 네이버가 디비인것처럼.
         String apiURL = "http://openapi.seoul.go.kr:8088/726c6b4b5a737969393555424e696f/xml/RealtimeCityAir/1/10";    // xml결과
         
