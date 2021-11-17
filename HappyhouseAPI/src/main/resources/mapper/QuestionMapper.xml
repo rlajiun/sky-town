@@ -20,7 +20,7 @@
 		insert into question(
 			title, writer, content, state
 		) values (
-			#{title}, #{writer}, #{content}
+			#{title}, #{writer}, #{content}, #{state}
 		)
 	</insert>
 	

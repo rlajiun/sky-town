@@ -20,6 +20,7 @@ import com.ssafy.happyhouse.model.service.AnswerService;
 
 import io.swagger.annotations.ApiOperation;
 
+//@CrossOrigin(origins = "http://localhost:9999/api/answer, http://localhost:8080")
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api/answer")
@@ -32,10 +33,10 @@ public class AnswerController {
 	private AnswerService answerService;
 
 	@ApiOperation(value = "글번호에 해당하는 답글의 정보를 반환한다.", response = Answer.class)
-	@GetMapping("{pNo}")
-	public ResponseEntity<Answer> detailAnswer(@PathVariable int pNo) {
+	@GetMapping("{no}")
+	public ResponseEntity<Answer> detailAnswer(@PathVariable int no) {
 		logger.debug("detailAnswer - 호출");
-		return new ResponseEntity<Answer>(answerService.detailAnswer(pNo), HttpStatus.OK);
+		return new ResponseEntity<Answer>(answerService.detailAnswer(no), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "새로운 답글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
