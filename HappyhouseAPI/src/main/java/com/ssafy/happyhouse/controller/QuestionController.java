@@ -38,7 +38,6 @@ public class QuestionController {
 	@GetMapping
 	public ResponseEntity<List<Question>> retrieveQuestion() throws Exception {
 		logger.debug("retrieveQuestion - 호출");
-		System.out.println("호추리아ㅓ니어린어린어리");
 		return new ResponseEntity<List<Question>>(questionService.retrieveQuestion(), HttpStatus.OK);
 	}
 
