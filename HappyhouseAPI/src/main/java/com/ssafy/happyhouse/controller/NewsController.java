@@ -53,7 +53,7 @@ public class NewsController {
 //	       <dd class="thumb">
 //	        <a href="https://www.mk.co.kr/news/realestate/view/2021/11/1039754/"><img src="https://file.mk.co.kr/meet/2021/11/image_listtop_2021_1039754_1635855428.jpg.thumb" alt=""><span class="im_boder"></span></a>
 //	       </dd>
-		while (page < 20) {
+		while (page < 2) {
 			String address = "https://www.mk.co.kr/news/realestate/";//부동산 뉴스 url
 			Document rawData = Jsoup.connect(address).timeout(5000).get();
 			System.out.println(rawData);
@@ -64,7 +64,9 @@ public class NewsController {
 			String realURL = "";
 			String realTITLE = "";
 			String realCONTENT = "";
-
+			
+			//10개의 뉴스 정보만 주자
+			
 			for (Element option : blogOption) {
 				//System.out.println(option);
 				Elements link = option.select("a");
@@ -78,16 +80,13 @@ public class NewsController {
 			}
 			int idx = 0;
 			for(Element e: blogContent) {
+				
 				realCONTENT = e.text();
 				newsList.get(idx++).setContent(realCONTENT);
 			}
 			page += 10;
 		}
-		
-		
-//		model.addAttribute("urls", al1);
-//		model.addAttribute("titles", al2);
-//		model.addAttribute("contents", al3);
+
 		return new ResponseEntity<ArrayList<News>>(newsList ,HttpStatus.OK);
 	}
 	

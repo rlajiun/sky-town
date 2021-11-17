@@ -38,6 +38,7 @@ public class QuestionController {
 	@GetMapping
 	public ResponseEntity<List<Question>> retrieveQuestion() throws Exception {
 		logger.debug("retrieveQuestion - 호출");
+		
 		return new ResponseEntity<List<Question>>(questionService.retrieveQuestion(), HttpStatus.OK);
 	}
 
