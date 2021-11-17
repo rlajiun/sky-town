@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.mapper.AnswerMapper">	
+	<!-- 답글 상세 조회 -->
+	<select id="selectQuestionByNo" resultType="question">
+		select no, title, writer, content, state, datetime
+		  from answer 
+		 where no = #{no}
+	</select>
+
+	<!-- 답글 등록 -->
+	<insert id="insertQuestion" parameterType="question">
+		insert into answer(
+			title, writer, content, state
+		) values (
+			#{title}, #{writer}, #{content}
+		)
+	</insert>
+	
+	<!-- 답글 수정 -->
+	<update id="updateQuestion" parameterType="question">
+		update answer 
+		   set content = #{content}
+		   	   state = #{state}
+		 where no = #{no}
+	</update>
+
+	<!-- 답글 삭제 -->
+	<delete id="deleteQuestion" parameterType="int">
+		delete from answer where no = #{no}
+	</delete>
+</mapper>
