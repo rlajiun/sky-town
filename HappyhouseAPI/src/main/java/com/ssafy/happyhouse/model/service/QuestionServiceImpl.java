@@ -12,7 +12,7 @@ import com.ssafy.happyhouse.model.mapper.QuestionMapper;
 public class QuestionServiceImpl implements QuestionService {
 	@Autowired
 	private QuestionMapper questionMapper;
-	
+
 	@Override
 	public List<Question> retrieveQuestion() {
 		return questionMapper.selectQuestion();

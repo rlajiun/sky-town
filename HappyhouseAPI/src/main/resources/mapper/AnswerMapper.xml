@@ -2,31 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.happyhouse.model.mapper.AnswerMapper">	
 	<!-- 답글 상세 조회 -->
-	<select id="selectQuestionByNo" resultType="question">
-		select no, title, writer, content, state, datetime
+	<select id="selectAnswerByParentNo" parameterType="int" resultType="answer">
+		select no, content, datetime, p_no
 		  from answer 
-		 where no = #{no}
+		 where p_no = #{p_no}
 	</select>
 
 	<!-- 답글 등록 -->
-	<insert id="insertQuestion" parameterType="question">
+	<insert id="insertAnswer" parameterType="answer">
 		insert into answer(
-			title, writer, content, state
+			content, p_no
 		) values (
-			#{title}, #{writer}, #{content}
+			#{content}, #{p_no}
 		)
 	</insert>
 	
 	<!-- 답글 수정 -->
-	<update id="updateQuestion" parameterType="question">
+	<update id="updateAnswer" parameterType="answer">
 		update answer 
 		   set content = #{content}
-		   	   state = #{state}
 		 where no = #{no}
 	</update>
 
 	<!-- 답글 삭제 -->
-	<delete id="deleteQuestion" parameterType="int">
+	<delete id="deleteAnswer" parameterType="int">
 		delete from answer where no = #{no}
 	</delete>
 </mapper>
