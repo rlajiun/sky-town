@@ -22,6 +22,7 @@ import com.ssafy.happyhouse.model.service.QuestionService;
 
 import io.swagger.annotations.ApiOperation;
 
+// http://localhost:9999/swagger-ui.html
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/api/question")
