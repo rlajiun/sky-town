@@ -21,7 +21,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 
-
 //@RequestMapping("/chat")
 @RestController
 public class ChatController {
@@ -72,6 +71,7 @@ public class ChatController {
 				JSONObject data = (JSONObject) bubbles.get("data");
 				String description = "";
 				description = (String) data.get("description");
+				System.out.println("message: " + description);
 				chatMessage = description;
 			} catch (Exception e) {
 				System.out.println("error");
@@ -112,6 +112,8 @@ public class ChatController {
 
 	// 보낼 메세지를 네이버 챗봇에 포맷으로 변경해주는 메소드
 	public static String getReqMessage(String voiceMessage) {
+//		JSONObject object = new JSONObject(voiceMessage);
+		System.out.println("data: " + voiceMessage.toCharArray().toString());
 
 		String requestBody = "";
 
