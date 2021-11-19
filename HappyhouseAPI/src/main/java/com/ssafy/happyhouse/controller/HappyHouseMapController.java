@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.model.Category;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.service.HappyHouseMapService;
@@ -50,5 +51,11 @@ public class HappyHouseMapController {
 			@RequestParam(value = "price", required = false, defaultValue = "0") int price) throws Exception {
 		return happyHouseMapService.getCountApt(dong, price);
 	}
-
+	
+	@GetMapping("/category")
+	public ResponseEntity<List<Category>> dong() throws Exception {
+		return new ResponseEntity<List<Category>>(happyHouseMapService.getCategory(), HttpStatus.OK);
+	}
+	
+	
 }
