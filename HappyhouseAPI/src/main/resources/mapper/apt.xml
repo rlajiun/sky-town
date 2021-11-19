@@ -36,6 +36,10 @@
 		order by aptName
 	</select>
 	
+	<select id="getCategory" resultType="category">
+		select * from category
+	</select>
+	
 <!-- 	<select id="getCountApt" parameterType="String" resultType="int">
 		select count(*) from houseinfo where dongCode=#{dong}
 	</select> -->

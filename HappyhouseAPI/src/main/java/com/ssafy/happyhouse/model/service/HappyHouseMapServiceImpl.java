@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.happyhouse.model.Category;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
@@ -81,6 +82,11 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 			return answer;
 		}
 		return house.get(dong).size();
+	}
+
+	@Override
+	public List<Category> getCategory() throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).getCategory();
 	}
 
 }
