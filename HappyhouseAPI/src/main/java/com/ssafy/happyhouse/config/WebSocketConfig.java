@@ -2,10 +2,12 @@ package com.ssafy.happyhouse.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
@@ -18,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     //메세지 브로커 등록
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/"); //도착경로 에 대한 prefix 설정
+        registry.setApplicationDestinationPrefixes("/chat"); //도착경로 에 대한 prefix 설정
         
         registry.enableSimpleBroker("/topic"); //한명이 message를 발행했을때 해당토픽을 구독하고 있는 n명에게 메시지 뿌려야 
     }

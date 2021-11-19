@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 //@RequestMapping("/chat")
 public class ChatController {
