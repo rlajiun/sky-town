@@ -55,30 +55,6 @@ public String sendMessage(@Payload String chatMessage) throws IOException {
 
     if (responseCode == 200) { // 정상 호출
 
-<<<<<<< HEAD
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-        String decodedString;
-        String jsonString = "";
-        while ((decodedString = in.readLine()) != null) {
-            jsonString = decodedString;
-        }
-        System.out.println("" + jsonString);
-        // 받아온 값을 세팅하는 부분
-        JSONParser jsonparser = new JSONParser();
-        try {
-            JSONObject json = (JSONObject) jsonparser.parse(jsonString);
-            JSONArray bubblesArray = (JSONArray) json.get("bubbles");
-            JSONObject bubbles = (JSONObject) bubblesArray.get(0);
-            JSONObject data = (JSONObject) bubbles.get("data");
-            String description = "";
-            description = (String) data.get("description");
-            System.out.println(description);
-            chatMessage = description;
-        } catch (Exception e) {
-            System.out.println("error");
-            e.printStackTrace();
-        }
-=======
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 			String decodedString;
 			String jsonString = "";
@@ -101,7 +77,6 @@ public String sendMessage(@Payload String chatMessage) throws IOException {
 				System.out.println("error");
 				e.printStackTrace();
 			}
->>>>>>> 78a52c262c719ba87b489333900ca0433a8581c8
 
         in.close();
     } else { // 에러 발생
@@ -135,15 +110,8 @@ public static String makeSignature(String message, String secretKey) {
 
 }
 
-<<<<<<< HEAD
 // 보낼 메세지를 네이버 챗봇에 포맷으로 변경해주는 메소드
 public static String getReqMessage(String voiceMessage) {
-=======
-	// 보낼 메세지를 네이버 챗봇에 포맷으로 변경해주는 메소드
-	public static String getReqMessage(String voiceMessage) {
-//		JSONObject object = new JSONObject(voiceMessage);
-		System.out.println("data: " + voiceMessage.toCharArray().toString());
->>>>>>> 78a52c262c719ba87b489333900ca0433a8581c8
 
     String requestBody = "";
 
