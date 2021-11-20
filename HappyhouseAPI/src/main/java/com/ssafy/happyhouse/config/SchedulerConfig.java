@@ -15,8 +15,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.ssafy.happyhouse.model.Apt;
-import com.ssafy.happyhouse.model.service.SchedulerService;
+import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.service.AptService;
 import com.ssafy.happyhouse.util.AptSaxParser;
 
 @EnableAsync // 추가
@@ -24,13 +24,13 @@ import com.ssafy.happyhouse.util.AptSaxParser;
 public class SchedulerConfig {
 	private final static String serviceKey = "d1Rx181izwjWsfI72cBRRZ648mlRP778AFOTWt%2FgwmGn5lz1OmJGGmbxejtDDXWjvJP8CdO1Th3fjy4zmYcVYg%3D%3D";
 	@Autowired
-	private SchedulerService schedulerService;
+	private AptService aptService;
 	private int totalCount = 1;
 	private List<Apt> aptList;
 	
 	@Async
 //	@Scheduled(fixedRate = 1000, cron = "0 0 0 1 * ?", zone = "Asia/Seoul") // 매월 1일 정오에 실행
-	@Scheduled(cron = "0 0 4 20 11 ?", zone = "Asia/Seoul") // 
+	@Scheduled(cron = "0 36 11 20 11 ?", zone = "Asia/Seoul") // 
 	public void aptUpdateTask() throws InterruptedException, IOException {
 		aptList = new ArrayList<Apt>();
 		for(int i = 1; i <= totalCount / 1000 + 1; i++) {
@@ -39,12 +39,11 @@ public class SchedulerConfig {
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + serviceKey); /*Service Key*/
 //        urlBuilder.append("&" + URLEncoder.encode("serviceKey","UTF-8") + "=" + URLEncoder.encode("인증키(URL E.ncode)", "UTF-8")); /*공공데이터포털에서 받은 인증키*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(Integer.toString(i), "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("10", "UTF-8")); /*목록 건수*/
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*목록 건수*/
         URL url = new URL(urlBuilder.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
-//        System.out.println("Response code: " + conn.getResponseCode());
         InputStream is;
         if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
         	is = conn.getInputStream();
@@ -54,6 +53,7 @@ public class SchedulerConfig {
         		aptList.addAll(apt);
 			}
         	totalCount = parser.getTotalCount();
+//        System.out.println("Response code: " + conn.getResponseCode());
         } else {
         	is = conn.getErrorStream();
         }
@@ -67,9 +67,12 @@ public class SchedulerConfig {
 		
 //		System.out.println(aptList);
         try {
-        	schedulerService.insertAptList(aptList); // 데이터베이스한테는 요청
-        	schedulerService.insertAptInfoList(aptList);
-        	schedulerService.insertAptDetailList(aptList);
+        	aptService.insertAptList(aptList); // 데이터베이스한테는 요청
+        	System.out.println("아파트 목록 insert 완료");
+        	aptService.insertAptInfoList(aptList);
+        	System.out.println("아파트 기본 정보 목록 insert 완료");
+        	aptService.insertAptDetailList(aptList);
+        	System.out.println("아파트 상세 정보 목록 insert 완료");
         } catch (Exception e) {
         	e.printStackTrace();
         }

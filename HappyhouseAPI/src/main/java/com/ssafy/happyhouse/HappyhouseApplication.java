@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class VueHappyhouseApplication {
+public class HappyhouseApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VueHappyhouseApplication.class, args);
+		SpringApplication.run(HappyhouseApplication.class, args);
 	}
 
 }

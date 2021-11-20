@@ -2,7 +2,7 @@ package com.ssafy.happyhouse.util;
 
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.ssafy.happyhouse.model.Apt;
+import com.ssafy.happyhouse.apt.model.Apt;
 
 /**
  * 아파트 기본 정보를 읽어 파싱하는 핸들러 클래스

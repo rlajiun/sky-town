@@ -1,4 +1,4 @@
-package com.ssafy.happyhouse.model;
+package com.ssafy.happyhouse.apt.model;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.ssafy.happyhouse.model.Apt;
+import com.ssafy.happyhouse.apt.model.Apt;
 
 /**
  * 단지 정보를 읽어 파싱하는 핸들러 클래스

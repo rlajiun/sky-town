@@ -3,11 +3,13 @@ package com.ssafy.happyhouse.model.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.model.Question;
 import com.ssafy.happyhouse.model.mapper.QuestionMapper;
 
+@Qualifier
 @Service
 public class QuestionServiceImpl implements QuestionService {
 	@Autowired

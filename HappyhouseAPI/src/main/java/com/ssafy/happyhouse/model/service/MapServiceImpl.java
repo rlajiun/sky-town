@@ -7,15 +7,17 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.model.Category;
 import com.ssafy.happyhouse.model.HouseInfoDto;
-import com.ssafy.happyhouse.model.SidoGugunCodeDto;
-import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
+import com.ssafy.happyhouse.model.SidoGugunCode;
+import com.ssafy.happyhouse.model.mapper.MapMapper;
 
+@Qualifier
 @Service
-public class HappyHouseMapServiceImpl implements HappyHouseMapService {
+public class MapServiceImpl implements MapService {
 
 	@Autowired
 	private SqlSession sqlSession;
@@ -23,18 +25,18 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 	private int priceListSize = 0;
 
 	@Override
-	public List<SidoGugunCodeDto> getSido() throws Exception {
-		return sqlSession.getMapper(HouseMapMapper.class).getSido();
+	public List<SidoGugunCode> getSido() throws Exception {
+		return sqlSession.getMapper(MapMapper.class).getSido();
 	}
 
 	@Override
-	public List<SidoGugunCodeDto> getGugunInSido(String sido) throws Exception {
-		return sqlSession.getMapper(HouseMapMapper.class).getGugunInSido(sido);
+	public List<SidoGugunCode> getGugunInSido(String sido) throws Exception {
+		return sqlSession.getMapper(MapMapper.class).getGugunInSido(sido);
 	}
 
 	@Override
 	public List<HouseInfoDto> getDongInGugun(String gugun) throws Exception {
-		return sqlSession.getMapper(HouseMapMapper.class).getDongInGugun(gugun);
+		return sqlSession.getMapper(MapMapper.class).getDongInGugun(gugun);
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 		List<HouseInfoDto> list;
 		
 		if (!house.containsKey(dong)) {
-			house.put(dong, sqlSession.getMapper(HouseMapMapper.class).getAptInDong(dong));
+			house.put(dong, sqlSession.getMapper(MapMapper.class).getAptInDong(dong));
 		}
 		
 		if (price != 0) {
@@ -86,7 +88,7 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 
 	@Override
 	public List<Category> getCategory() throws Exception {
-		return sqlSession.getMapper(HouseMapMapper.class).getCategory();
+		return sqlSession.getMapper(MapMapper.class).getCategory();
 	}
 
 }

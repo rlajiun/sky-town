@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.model.Category;
 import com.ssafy.happyhouse.model.HouseInfoDto;
-import com.ssafy.happyhouse.model.SidoGugunCodeDto;
-import com.ssafy.happyhouse.model.service.HappyHouseMapService;
+import com.ssafy.happyhouse.model.SidoGugunCode;
+import com.ssafy.happyhouse.model.service.MapService;
 
 @RestController
 @RequestMapping("/map")
-public class HappyHouseMapController {
+public class MapController {
 
 	@Autowired
-	private HappyHouseMapService happyHouseMapService;
+	private MapService happyHouseMapService;
 
 	@GetMapping("/sido")
-	public ResponseEntity<List<SidoGugunCodeDto>> sido() throws Exception {
-		return new ResponseEntity<List<SidoGugunCodeDto>>(happyHouseMapService.getSido(), HttpStatus.OK);
+	public ResponseEntity<List<SidoGugunCode>> sido() throws Exception {
+		return new ResponseEntity<List<SidoGugunCode>>(happyHouseMapService.getSido(), HttpStatus.OK);
 	}
 
 	@GetMapping("/gugun")
-	public ResponseEntity<List<SidoGugunCodeDto>> gugun(@RequestParam("sido") String sido) throws Exception {
-		return new ResponseEntity<List<SidoGugunCodeDto>>(happyHouseMapService.getGugunInSido(sido), HttpStatus.OK);
+	public ResponseEntity<List<SidoGugunCode>> gugun(@RequestParam("sido") String sido) throws Exception {
+		return new ResponseEntity<List<SidoGugunCode>>(happyHouseMapService.getGugunInSido(sido), HttpStatus.OK);
 	}
 
 	@GetMapping("/dong")

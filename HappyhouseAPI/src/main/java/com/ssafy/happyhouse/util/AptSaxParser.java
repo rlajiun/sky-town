@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.ssafy.happyhouse.model.Apt;
+import com.ssafy.happyhouse.apt.model.Apt;
 
 import lombok.Getter;
 

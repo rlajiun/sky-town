@@ -1,10 +1,10 @@
-package com.ssafy.happyhouse.model.service;
+package com.ssafy.happyhouse.apt.model.service;
 
 import java.util.List;
 
-import com.ssafy.happyhouse.model.Apt;
+import com.ssafy.happyhouse.apt.model.Apt;
 
-public interface SchedulerService {
+public interface AptService {
 	void insertAptList(List<Apt> aptList) throws Exception;
 
 	void insertAptInfoList(List<Apt> aptList) throws Exception;
