@@ -1,4 +1,4 @@
-package com.ssafy.happyhouse.controller;
+package com.ssafy.happyhouse.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
