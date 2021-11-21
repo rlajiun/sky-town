@@ -31,19 +31,16 @@
 
 	<select id="getAptInDong" parameterType="string"
 		resultType="apt">
-		select h.aptCode, h.aptName, h.buildyear, h.dongCode,
-		h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
-		(select
-		dealAmount from housedeal where aptCode = h.aptCode and no = (select
-		max(no) from housedeal where aptCode = h.aptCode)) recentPrice
-		from
-		houseinfo h
-		left join sidocode si
-		on left(h.dongcode,2) =
-		left(si.sidocode,2)
-		left join guguncode gu
-		on left(h.dongcode,5) =
-		left(gu.guguncode,5)
+		select
+		aptCode, aptName, sidoName, gugunName, dongName, leeName, dongCode, aptAddr,
+		codeSaleNm, codeHeatNm, aptTarea, aptDongCnt, aptdaCnt, aptTel,
+		aptFax, aptUrl, codeAptNm, doroJuso, hoCnt, codeMgrNm, codeHallNm,
+		aptUsedate, aptMarea, aptMparea_60, aptMparea_85, aptMparea_135,
+		aptMparea_136, privArea, codeGarbage, aptdEcnt, aptdPcnt, aptdPcntu,
+		codeNet, aptdCccnt, welfareFacility, aptdWtimebus, subwayLine,
+		subwayStation, aptdWtimesub, convenientFacility, educationFacility
+		from apt join aptinfo using(aptCode) join aptdetail
+		using(aptCode)
 		where dongCode = #{dong}
 		order by aptName
 	</select>

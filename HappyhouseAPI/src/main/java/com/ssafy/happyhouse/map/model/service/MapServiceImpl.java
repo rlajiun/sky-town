@@ -1,6 +1,5 @@
 package com.ssafy.happyhouse.map.model.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,17 +8,17 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.happyhouse.apt.model.Apt;
 import com.ssafy.happyhouse.map.model.SidoGugunCode;
 import com.ssafy.happyhouse.map.model.mapper.MapMapper;
 import com.ssafy.happyhouse.util.model.Category;
-import com.ssafy.happyhouse.util.model.HouseInfoDto;
 
 @Service
 public class MapServiceImpl implements MapService {
 
 	@Autowired
 	private SqlSession sqlSession;
-	private Map<String, List<HouseInfoDto>> house = new HashMap<String, List<HouseInfoDto>>();
+	private Map<String, List<Apt>> house = new HashMap<String, List<Apt>>();
 	private int priceListSize = 0;
 
 	@Override
@@ -33,35 +32,35 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<HouseInfoDto> getDongInGugun(String gugun) throws Exception {
+	public List<Apt> getDongInGugun(String gugun) throws Exception {
 		return sqlSession.getMapper(MapMapper.class).getDongInGugun(gugun);
 	}
 
 	@Override
-	public List<HouseInfoDto> getAptInDong(String dong, int start, int cnt, int price) throws Exception {
-		List<HouseInfoDto> list;
+	public List<Apt> getAptInDong(String dong, int start, int cnt) throws Exception {
+		List<Apt> list;
 		
 		if (!house.containsKey(dong)) {
 			house.put(dong, sqlSession.getMapper(MapMapper.class).getAptInDong(dong));
 		}
 		
-		if (price != 0) {
-			List<HouseInfoDto> priceList = new ArrayList<>();
-			for (int i = 0; i < house.get(dong).size(); i++) {
-				System.out.println("최신가격: " + house.get(dong).get(i).getRecentPrice());
-				if (house.get(dong).get(i).getRecentPrice() != null) {
-					String[] st = house.get(dong).get(i).getRecentPrice().trim().split(",");
-					int p = Integer.parseInt(st[0] + st[1]);// 매물가격이고 기준가격이랑 비교해서 띄울지 말지 결정
-					if (p <= price) {
-						priceList.add(house.get(dong).get(i));
-					}
-				}
-			}
-			list = priceList;
-			priceListSize = list.size();
-		}else {
+//		if (price != 0) {
+//			List<Apt> priceList = new ArrayList<>();
+//			for (int i = 0; i < house.get(dong).size(); i++) {
+//				System.out.println("최신가격: " + house.get(dong).get(i).getRecentPrice());
+//				if (house.get(dong).get(i).getRecentPrice() != null) {
+//					String[] st = house.get(dong).get(i).getRecentPrice().trim().split(",");
+//					int p = Integer.parseInt(st[0] + st[1]);// 매물가격이고 기준가격이랑 비교해서 띄울지 말지 결정
+//					if (p <= price) {
+//						priceList.add(house.get(dong).get(i));
+//					}
+//				}
+//			}
+//			list = priceList;
+//			priceListSize = list.size();
+//		}else {
 			list = house.get(dong);
-		}
+//		}
 
 		if (cnt + start > list.size()) {
 			return list.subList(start, list.size());

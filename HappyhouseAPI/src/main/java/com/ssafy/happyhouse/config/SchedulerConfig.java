@@ -35,30 +35,30 @@ public class SchedulerConfig {
 		aptList = new ArrayList<Apt>();
 		for(int i = 1; i <= totalCount / 1000 + 1; i++) {
 //		for(int i = 1; i <= 1; i++) {
-		StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/AptListService2/getTotalAptList"); /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + serviceKey); /*Service Key*/
-//        urlBuilder.append("&" + URLEncoder.encode("serviceKey","UTF-8") + "=" + URLEncoder.encode("인증키(URL E.ncode)", "UTF-8")); /*공공데이터포털에서 받은 인증키*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(Integer.toString(i), "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*목록 건수*/
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        InputStream is;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-        	is = conn.getInputStream();
-        	AptSaxParser parser = new AptSaxParser(is);
-        	List<Apt> apt = parser.getAptList();
-        	if (apt != null) {
-        		aptList.addAll(apt);
-			}
-        	totalCount = parser.getTotalCount();
-//        System.out.println("Response code: " + conn.getResponseCode());
-        } else {
-        	is = conn.getErrorStream();
-        }
-        is.close();
-        conn.disconnect();
+			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/AptListService2/getTotalAptList"); /*URL*/
+	        urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + serviceKey); /*Service Key*/
+	//        urlBuilder.append("&" + URLEncoder.encode("serviceKey","UTF-8") + "=" + URLEncoder.encode("인증키(URL E.ncode)", "UTF-8")); /*공공데이터포털에서 받은 인증키*/
+	        urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(Integer.toString(i), "UTF-8")); /*페이지번호*/
+	        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); /*목록 건수*/
+	        URL url = new URL(urlBuilder.toString());
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("GET");
+	        conn.setRequestProperty("Content-type", "application/json");
+	        InputStream is;
+	        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+	        	is = conn.getInputStream();
+	        	AptSaxParser parser = new AptSaxParser(is);
+	        	List<Apt> apt = parser.getAptList();
+	        	if (apt != null) {
+	        		aptList.addAll(apt);
+				}
+	        	totalCount = parser.getTotalCount();
+	//        System.out.println("Response code: " + conn.getResponseCode());
+	        } else {
+	        	is = conn.getErrorStream();
+	        }
+	        is.close();
+	        conn.disconnect();
 		}
 		
 		for (int i = 0; i < aptList.size(); i++) {
