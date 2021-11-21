@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.happyhouse.model.mapper.QuestionMapper">
+<mapper namespace="com.ssafy.happyhouse.qna.model.mapper.QuestionMapper">
 	<!-- 문의글 전체 조회 -->
 	<select id="selectQuestion" resultType="question">
 		select no, title, writer, content, state, datetime
