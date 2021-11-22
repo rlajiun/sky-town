@@ -5,20 +5,20 @@
 <mapper
 	namespace="com.ssafy.happyhouse.map.model.mapper.MapMapper">
 
-	<select id="getSido" resultType="sidoGugunCode">
+<!-- 	<select id="getSido" resultType="sidoGugunCode">
 		select left(sidoCode,2)
 		sidoCode, sidoName
 		from sidocode
 		order by sidoCode
 	</select>
-
-	<select id="getGugunInSido" parameterType="string"
+ -->
+<!-- 	<select id="getGugunInSido" parameterType="string"
 		resultType="sidoGugunCode">
 		select left(gugunCode,5) gugunCode, gugunName
 		from guguncode
 		where left(gugunCode,2) = #{sido}
 		order by gugunCode
-	</select>
+	</select> -->
 
 	<select id="getDongInGugun" parameterType="string"
 		resultType="apt">
@@ -44,9 +44,30 @@
 		where dongCode = #{dong}
 		order by aptName
 	</select>
+	
+	<select id="selectAllApt"
+		resultType="apt">
+		select
+		aptCode, aptName, sidoName, gugunName, dongName, leeName, dongCode, aptAddr,
+		codeSaleNm, codeHeatNm, aptTarea, aptDongCnt, aptdaCnt, aptTel,
+		aptFax, aptUrl, codeAptNm, doroJuso, hoCnt, codeMgrNm, codeHallNm,
+		aptUsedate, aptMarea, aptMparea_60, aptMparea_85, aptMparea_135,
+		aptMparea_136, privArea, codeGarbage, aptdEcnt, aptdPcnt, aptdPcntu,
+		codeNet, aptdCccnt, welfareFacility, aptdWtimebus, subwayLine,
+		subwayStation, aptdWtimesub, convenientFacility, educationFacility
+		from apt join aptinfo using(aptCode) join aptdetail
+		using(aptCode)
+		order by aptName
+	</select>
 
-	<select id="getCategory" resultType="category">
-		select * from category
+	<select id="getSido" resultType="hashmap">
+		select sidoCode, sidoName, count(*) count 
+		from apt join sidocode using(sidoName) group by sidoName order by sidocode
+	</select>
+	
+	<select id="getGugunInSido" parameterType="string" resultType="hashmap">
+		select gugunCode, gugunName, count(*) count 
+		from apt join guguncode using(gugunName) group by gugunName having left(gugunCode,2) = #{sido} order by guguncode
 	</select>
 
 </mapper>

@@ -95,4 +95,8 @@
 		educationFacility =
 		values(educationFacility)
 	</insert>
+	
+	<select id="selectAllApt" parameterType="apt">
+		select 
+	</select>
 </mapper>

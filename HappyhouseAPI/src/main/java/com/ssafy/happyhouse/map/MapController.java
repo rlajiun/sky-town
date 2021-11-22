@@ -2,6 +2,7 @@ package com.ssafy.happyhouse.map;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.apt.model.Apt;
-import com.ssafy.happyhouse.map.model.SidoGugunCode;
 import com.ssafy.happyhouse.map.model.service.MapService;
 import com.ssafy.happyhouse.util.model.Category;
 
@@ -22,14 +22,21 @@ public class MapController {
 	@Autowired
 	private MapService mapService;
 
-	@GetMapping("/sido")
-	public ResponseEntity<List<SidoGugunCode>> sido() throws Exception {
-		return new ResponseEntity<List<SidoGugunCode>>(mapService.getSido(), HttpStatus.OK);
-	}
+//	@GetMapping("/sido")
+//	public ResponseEntity<List<SidoGugunCode>> sido() throws Exception {
+//		return new ResponseEntity<List<SidoGugunCode>>(mapService.getSido(), HttpStatus.OK);
+//	}
 
+//	@GetMapping("/gugun")
+//	public ResponseEntity<List<SidoGugunCode>> gugun(@RequestParam("sido") String sido) throws Exception {
+//		return new ResponseEntity<List<SidoGugunCode>>(mapService.getGugunInSido(sido), HttpStatus.OK);
+//	}
+	
 	@GetMapping("/gugun")
-	public ResponseEntity<List<SidoGugunCode>> gugun(@RequestParam("sido") String sido) throws Exception {
-		return new ResponseEntity<List<SidoGugunCode>>(mapService.getGugunInSido(sido), HttpStatus.OK);
+	public ResponseEntity<JSONArray> gugun(@RequestParam("sido") String sido) throws Exception {
+		JSONArray array = new JSONArray();
+		array.addAll(mapService.getGugunInSido(sido));
+		return new ResponseEntity<JSONArray>(array, HttpStatus.OK);
 	}
 
 	@GetMapping("/dong")
@@ -37,6 +44,13 @@ public class MapController {
 		return new ResponseEntity<List<Apt>>(mapService.getDongInGugun(gugun), HttpStatus.OK);
 	}
 
+	@GetMapping("/allApt")
+	public ResponseEntity<List<Apt>> apt() throws Exception {
+//		System.out.println(mapService.getAllApt().size());
+		return new ResponseEntity<List<Apt>>(mapService.getAllApt(),
+				HttpStatus.OK);
+	}
+	
 	@GetMapping("/apt")
 	public ResponseEntity<List<Apt>> apt(@RequestParam("dong") String dong,
 			@RequestParam(value = "start", required = false, defaultValue = "0") int start,
@@ -49,6 +63,13 @@ public class MapController {
 	public int page(@RequestParam("dong") String dong,
 			@RequestParam(value = "price", required = false, defaultValue = "0") int price) throws Exception {
 		return mapService.getCountApt(dong, price);
+	}
+	
+	@GetMapping("/sido")
+	public ResponseEntity<JSONArray> sidoCnt() throws Exception{
+		JSONArray array = new JSONArray();
+		array.addAll(mapService.getSido());
+		return new ResponseEntity<JSONArray>(array, HttpStatus.OK);
 	}
 	
 	@GetMapping("/category")

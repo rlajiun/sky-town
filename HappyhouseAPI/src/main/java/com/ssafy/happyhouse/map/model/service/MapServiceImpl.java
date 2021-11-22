@@ -21,13 +21,18 @@ public class MapServiceImpl implements MapService {
 	private Map<String, List<Apt>> house = new HashMap<String, List<Apt>>();
 	private int priceListSize = 0;
 
-	@Override
-	public List<SidoGugunCode> getSido() throws Exception {
-		return sqlSession.getMapper(MapMapper.class).getSido();
-	}
+//	@Override
+//	public List<SidoGugunCode> getSido() throws Exception {
+//		return sqlSession.getMapper(MapMapper.class).getSido();
+//	}
 
+//	@Override
+//	public List<SidoGugunCode> getGugunInSido(String sido) throws Exception {
+//		return sqlSession.getMapper(MapMapper.class).getGugunInSido(sido);
+//	}
+	
 	@Override
-	public List<SidoGugunCode> getGugunInSido(String sido) throws Exception {
+	public List<Map<String, String>> getGugunInSido(String sido) throws Exception {
 		return sqlSession.getMapper(MapMapper.class).getGugunInSido(sido);
 	}
 
@@ -67,7 +72,10 @@ public class MapServiceImpl implements MapService {
 		}
 		return list.subList(start, cnt + start);
 	}
-
+	@Override
+	public List<Apt> getAllApt() throws Exception {
+		return sqlSession.getMapper(MapMapper.class).selectAllApt();
+	}
 //	@Override
 //	public List<HouseInfoDto> getAptLowerPrice(String dong, String price) throws Exception {
 //		return sqlSession.getMapper(HouseMapMapper.class).getAptLowerPrice(dong, price);
@@ -81,6 +89,11 @@ public class MapServiceImpl implements MapService {
 			return answer;
 		}
 		return house.get(dong).size();
+	}
+	
+	@Override
+	public List<Map<String, String>> getSido() throws Exception {
+		return sqlSession.getMapper(MapMapper.class).getSido();
 	}
 
 	@Override

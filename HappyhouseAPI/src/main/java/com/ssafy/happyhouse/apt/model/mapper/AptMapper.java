@@ -13,4 +13,10 @@ public interface AptMapper {
 	void insertAptInfo(@Param("aptList") List<Apt> aptList) throws SQLException;
 
 	void insertAptDetail(@Param("aptList") List<Apt> aptList) throws SQLException;
+	
+	int selectSidoAptCnt() throws SQLException;
+	
+	List<Apt> selectAllApt() throws SQLException;
+	
+//	List<Apt> selectApt
 }
