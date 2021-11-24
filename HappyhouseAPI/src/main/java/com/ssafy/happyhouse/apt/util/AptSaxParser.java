@@ -60,9 +60,4 @@ public class AptSaxParser {
 			e.printStackTrace();
 		}
 	}
-	
-	public Apt getApt() {
-		return apt;
-	}
-
 }

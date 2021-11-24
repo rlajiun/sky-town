@@ -21,16 +21,6 @@ public class MapController {
 
 	@Autowired
 	private MapService mapService;
-
-//	@GetMapping("/sido")
-//	public ResponseEntity<List<SidoGugunCode>> sido() throws Exception {
-//		return new ResponseEntity<List<SidoGugunCode>>(mapService.getSido(), HttpStatus.OK);
-//	}
-
-//	@GetMapping("/gugun")
-//	public ResponseEntity<List<SidoGugunCode>> gugun(@RequestParam("sido") String sido) throws Exception {
-//		return new ResponseEntity<List<SidoGugunCode>>(mapService.getGugunInSido(sido), HttpStatus.OK);
-//	}
 	
 	@GetMapping("/gugun")
 	public ResponseEntity<JSONArray> gugun(@RequestParam("sido") String sido) throws Exception {
@@ -40,8 +30,10 @@ public class MapController {
 	}
 
 	@GetMapping("/dong")
-	public ResponseEntity<List<Apt>> dong(@RequestParam("gugun") String gugun) throws Exception {
-		return new ResponseEntity<List<Apt>>(mapService.getDongInGugun(gugun), HttpStatus.OK);
+	public ResponseEntity<JSONArray> dong(@RequestParam("gugun") String gugun) throws Exception {
+		JSONArray array = new JSONArray();
+		array.addAll(mapService.getDongInGugun(gugun));
+		return new ResponseEntity<JSONArray>(array, HttpStatus.OK);
 	}
 
 	@GetMapping("/allApt")
@@ -52,18 +44,16 @@ public class MapController {
 	}
 	
 	@GetMapping("/apt")
-	public ResponseEntity<List<Apt>> apt(@RequestParam("dong") String dong,
-			@RequestParam(value = "start", required = false, defaultValue = "0") int start,
-			@RequestParam(value = "cnt", required = false, defaultValue = "5") int cnt) throws Exception {
-		return new ResponseEntity<List<Apt>>(mapService.getAptInDong(dong, start, cnt),
+	public ResponseEntity<List<Apt>> apt(@RequestParam("dong") String dong) throws Exception {
+		return new ResponseEntity<List<Apt>>(mapService.getAptInDong(dong),
 				HttpStatus.OK);
 	}
 
-	@GetMapping("/page")
-	public int page(@RequestParam("dong") String dong,
-			@RequestParam(value = "price", required = false, defaultValue = "0") int price) throws Exception {
-		return mapService.getCountApt(dong, price);
-	}
+//	@GetMapping("/page")
+//	public int page(@RequestParam("dong") String dong,
+//			@RequestParam(value = "price", required = false, defaultValue = "0") int price) throws Exception {
+//		return mapService.getCountApt(dong, price);
+//	}
 	
 	@GetMapping("/sido")
 	public ResponseEntity<JSONArray> sidoCnt() throws Exception{

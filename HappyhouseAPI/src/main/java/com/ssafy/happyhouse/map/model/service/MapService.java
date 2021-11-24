@@ -14,13 +14,13 @@ public interface MapService {
 	
 	List<Map<String, String>> getGugunInSido(String sido) throws Exception;
 
-	List<Apt> getDongInGugun(String gugun) throws Exception;
+	List<Map<String, String>> getDongInGugun(String gugun) throws Exception;
 
-	List<Apt> getAptInDong(String dong, int start, int cnt) throws Exception;
+	List<Apt> getAptInDong(String dong) throws Exception;
 
 	List<Apt> getAllApt() throws Exception;
 
-	int getCountApt(String dong, int price) throws Exception;
+//	int getCountApt(String dong, int price) throws Exception;
 
 	List<Map<String, String>> getSido() throws Exception;
 

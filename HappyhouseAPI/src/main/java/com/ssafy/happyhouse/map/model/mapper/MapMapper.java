@@ -5,24 +5,24 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptDeal;
 import com.ssafy.happyhouse.util.model.Category;
 
 public interface MapMapper {
 
-//	List<SidoGugunCode> getSido() throws SQLException;
-
-//	List<SidoGugunCode> getGugunInSido(String sido) throws SQLException;
+	List<Map<String, String>> selectSido() throws SQLException;
 	
-	List<Map<String, String>> getGugunInSido(String sido) throws SQLException;
+	List<Map<String, String>> selectGugunInSido(String sido) throws SQLException;
 
-	List<Apt> getDongInGugun(String gugun) throws SQLException;
+	List<Map<String, String>> selectDongInGugun(String gugun) throws SQLException;
 
-	List<Apt> getAptInDong(String dong) throws SQLException;
+	List<Apt> selectAptInDong(String dong) throws SQLException;
+	
+//	List<AptDeal> selectDealInApt(String )
 	
 	List<Apt> selectAllApt() throws SQLException;
 
 	List<Category> getCategory() throws SQLException;
 	
-	List<Map<String, String>> getSido() throws SQLException;
 
 }

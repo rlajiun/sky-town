@@ -15,17 +15,61 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptDeal;
 import com.ssafy.happyhouse.apt.model.service.AptService;
+import com.ssafy.happyhouse.apt.util.AptDealSaxParser;
 import com.ssafy.happyhouse.apt.util.AptSaxParser;
 
 @EnableAsync // 추가
 @Component
 public class SchedulerConfig {
-	private final static String serviceKey = "d1Rx181izwjWsfI72cBRRZ648mlRP778AFOTWt%2FgwmGn5lz1OmJGGmbxejtDDXWjvJP8CdO1Th3fjy4zmYcVYg%3D%3D";
+	private final static String serviceKey = "oymQn0W8EVpAimvw4XJZnAIxO9Fsc6%2FmQ1sKJ%2FEa%2F9FgjfJFi3Ry%2FMAPq1Iv8AtlAzlA0Wn%2FQVZ1DtjI35ntQg%3D%3D";
 	@Autowired
 	private AptService aptService;
 	private int totalCount = 1;
 	private List<Apt> aptList;
+	
+//	@Scheduled(fixedDelay = 1000*60*60*24) 
+	public void aptDealUpdateTask() throws Exception {
+		System.out.println("시작");
+		List<String> codes = aptService.selectGugunCodeList();
+		int mon = 11;
+		
+		for (int i = 0; i < codes.size(); i++) {
+			for (int k = mon; k > mon - 6; k--) {
+				for (int j = 1; j <= totalCount / 100 + 1; j++) {
+					StringBuilder urlBuilder = new StringBuilder("http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev"); /*URL*/
+					urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey); /* Service Key */
+					urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(Integer.toString(j), "UTF-8")); /*페이지번호*/
+					urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); /*한 페이지 결과 수*/
+					urlBuilder.append("&" + URLEncoder.encode("LAWD_CD","UTF-8") + "=" + URLEncoder.encode(codes.get(i), "UTF-8")); /*지역코드*/
+					urlBuilder.append("&" + URLEncoder.encode("DEAL_YMD","UTF-8") + "=" + URLEncoder.encode("2021"+Integer.toString(k), "UTF-8")); /*계약월*/
+					URL url = new URL(urlBuilder.toString());
+					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+					conn.setRequestMethod("GET");
+					conn.setRequestProperty("Content-type", "application/json");
+					System.out.println("Response code: " + conn.getResponseCode());
+					InputStream is;
+					if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+						is = conn.getInputStream();
+						AptDealSaxParser parser = new AptDealSaxParser(is);
+						List<AptDeal> aptDeal = parser.getAptDealList();
+						if (aptDeal != null && aptDeal.size() > 0) {
+							System.out.println(aptDeal);
+							aptService.insertAptDealList(aptDeal);
+							System.out.println("부분 완료");
+						}
+						totalCount = parser.getTotalCount();
+					} else {
+						is = conn.getErrorStream();
+					}
+					is.close();
+					conn.disconnect();			
+					}
+			}
+		}
+		System.out.println("전체 완료");
+    }
 
 	@Scheduled(cron = "0 0 0 1 * ?", zone = "Asia/Seoul") // 매월 1일 정오에 실행
 	public void aptUpdateTask() throws InterruptedException, IOException {
@@ -34,8 +78,6 @@ public class SchedulerConfig {
 		for(int i = 1; i <= totalCount / 1000 + 1; i++) {
 			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/AptListService2/getTotalAptList"); /* URL */
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey); /* Service Key */
-			// urlBuilder.append("&" + URLEncoder.encode("serviceKey","UTF-8") + "=" +
-			// URLEncoder.encode("인증키(URL E.ncode)", "UTF-8")); /*공공데이터포털에서 받은 인증키*/
 			urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "="
 					+ URLEncoder.encode(Integer.toString(i), "UTF-8")); /* 페이지번호 */
 			urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "="
