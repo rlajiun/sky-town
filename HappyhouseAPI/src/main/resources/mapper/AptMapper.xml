@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.happyhouse.apt.model.mapper.AptMapper">
+<mapper
+	namespace="com.ssafy.happyhouse.apt.model.mapper.AptMapper">
+	<select id="selectGugunCode" resultType="string">
+		select gugunCode from guguncode where left(guguncode, 2) >= 41
+	</select>
+	
 	<insert id="insertApt">
 		insert into apt(aptCode, aptName, sidoName, gugunName, dongName,
 		leeName, dongCode)
@@ -95,8 +100,29 @@
 		educationFacility =
 		values(educationFacility)
 	</insert>
-	
-	<select id="selectAllApt" parameterType="apt">
-		select 
-	</select>
+
+	<insert id="insertAptDeal">
+		insert into aptdeal(dealCode, dealAmount, buildYear, dealYear,
+		dongCode,
+		aptName, dealMonth, dealDay, dealArea,
+		jibun, floor,
+		cancelDealType, cancelDealDay,
+		reqGbn, redealerLawdnm)
+		VALUES
+		<foreach collection="aptDealList" item="apt" separator=",">
+			(
+			#{apt.dealCode}, #{apt.dealAmount}, #{apt.buildYear},
+			#{apt.dealYear},
+			#{apt.dongCode},
+			#{apt.aptName}, #{apt.dealMonth},
+			#{apt.dealDay},
+			#{apt.dealArea}, #{apt.jibun},
+			#{apt.floor},
+			#{apt.cancelDealType},
+			#{apt.cancelDealDay}
+			,
+			#{apt.reqGbn},
+			#{apt.redealerLawdnm})
+		</foreach>
+	</insert>
 </mapper>

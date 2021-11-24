@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptDeal;
 import com.ssafy.happyhouse.apt.model.mapper.AptMapper;
 
 @Qualifier
@@ -29,5 +30,15 @@ public class AptServiceImpl implements AptService {
 	@Override
 	public void insertAptDetailList(List<Apt> aptList) throws Exception {
 		sqlSession.getMapper(AptMapper.class).insertAptDetail(aptList);
+	}
+
+	@Override
+	public void insertAptDealList(List<AptDeal> aptDealList) throws Exception {
+		sqlSession.getMapper(AptMapper.class).insertAptDeal(aptDealList);
+	}
+
+	@Override
+	public List<String> selectGugunCodeList() throws Exception {
+		return sqlSession.getMapper(AptMapper.class).selectGugunCode();
 	}
 }
