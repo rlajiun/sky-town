@@ -1,0 +1,85 @@
+
+결과코드
+resultCode
+00:성공
+결과메시지
+resultMsg
+결과메시지
+단지코드
+kaptCode
+단지코드
+단지명
+kaptName
+단지명
+법정동주소
+kaptAddr
+법정동주소
+분양형태
+codeSaleNm
+분양형태
+난방방식
+codeHeatNm
+난방방식
+건축물대장상 연면적
+kaptTarea
+건축물대장상 연면적(㎡)
+동수
+kaptDongCnt
+동수
+세대수
+kaptdaCnt
+세대수
+시공사
+kaptBcompany
+시공사
+시행사
+kaptAcompany
+시행사
+관리사무소연락처
+kaptTel
+관리사무소연락처
+관리사무소팩스
+kaptFax
+관리사무소팩스
+홈페이지주소
+kaptUrl
+홈페이지주소
+단지분류
+codeAptNm
+단지분류
+도로명주소
+doroJuso
+도로명주소
+호수
+hoCnt
+호수
+관리방식
+codeMgrNm
+관리방식
+복도유형
+codeHallNm
+복도유형
+사용승인일
+kaptUsedate
+사용승인일
+관리비부과면적
+kaptMarea
+관리비부과면적(㎡)
+전용면적별 세대현황
+kaptMparea_60
+60㎡ 이하
+전용면적별 세대현황
+kaptMparea_85
+60㎡ ~ 85㎡ 이하
+전용면적별 세대현황
+kaptMparea_135
+85㎡ ~ 135㎡ 이하
+전용면적별 세대현황
+kaptMparea_136
+135㎡ 초과
+대장 전용면적합계
+privArea
+단지 전용면적합(㎡)
+법정동코드
+bjdCode
+법정동코드
