@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,6 +43,7 @@ import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/naver")
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 public class NaverLoginController {
 
 	private String CLIENT_ID = "FssPbW4KG1cD9O8YXEhN"; // 애플리케이션 클라이언트 아이디값";
@@ -198,19 +200,24 @@ public class NaverLoginController {
 
 	// 토큰 삭제 컨트롤러
 	@RequestMapping("/deleteToken")
-	public String deleteToken(HttpSession session, HttpServletRequest request, Model model, String accessToken)
-			throws IOException {
+	public ResponseEntity<Map<String, Object>> deleteToken(HttpSession session, HttpServletRequest request, Model model)
+			throws IOException, URISyntaxException {
 		String apiURL;
 		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=delete&";
 		apiURL += "client_id=" + CLIENT_ID;
 		apiURL += "&client_secret=" + CLI_SECRET;
-		apiURL += "&access_token=" + accessToken;
+		apiURL += "&access_token=" + request.getHeader("access-token");
 		apiURL += "&service_provider=NAVER";
 		System.out.println("apiURL=" + apiURL);
 		String res = requestToServer(apiURL);
 		model.addAttribute("res", res);
 		session.invalidate();
-		return "test-naver-callback";
+		System.out.println("토큰 잘 삭제됨 ~~~");
+		URI redirectUri = new URI("http://localhost:8080/");
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setLocation(redirectUri);
+
+		return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
 	}
 
 	// 액세스 토큰으로 네이버에서 프로필 받기
@@ -230,9 +237,10 @@ public class NaverLoginController {
 	
 
 	// 세션 무효화(로그아웃)
-	@RequestMapping("/naver/invalidate")
+	@RequestMapping("/invalidate")
 	public String invalidateSession(HttpSession session) {
 		session.invalidate();
+		System.out.println("로그아웃....");
 		return "redirect:/naver";
 	}
 
