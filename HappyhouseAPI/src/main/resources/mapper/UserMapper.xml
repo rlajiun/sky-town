@@ -6,14 +6,14 @@
 		select
 		count(userid)
 		from member
-		where userid = #{userId}
+		where userId = #{userId}
 	</select>
 
 	<insert id="registerMember" parameterType="user">
 		insert into
-		member (userid, username, userpwd, email, joindate)
+		user (username, email, joindate)
 		values
-		(#{userId}, #{userName}, #{userPwd}, #{email}, now())
+		(#{userName} #{email}, now())
 	</insert>
 
 	<select id="login" parameterType="map" resultType="user">
@@ -22,6 +22,12 @@
 		from member
 		where userid = #{userId} and
 		userpwd = #{userPwd}
+	</select>
+	
+	<select id="userInfo" parameterType="String" resultType="user">
+		select username, userid, email, joindate
+		from user
+		where userid=#{userId}
 	</select>
 
 	<select id="listMember" resultType="user">

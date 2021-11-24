@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
 	public User login(Map<String, String> map) throws Exception {
 		return sqlSession.getMapper(UserMapper.class).login(map);
 	}
+	
 
 	@Override
 	public List<User> listMember() throws Exception {
@@ -50,4 +51,9 @@ public class UserServiceImpl implements UserService {
 	public void deleteMember(String userId) throws Exception {
 		sqlSession.getMapper(UserMapper.class).deleteMember(userId);
 	}
+
+	public User userInfo(String userid) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
+	}
+
 }

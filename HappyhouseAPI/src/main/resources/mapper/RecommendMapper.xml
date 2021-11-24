@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.happyhouse.recommend.model.mapper.RecommendMapper">
-<select id="getRecommendInfo" resultType="RecommendInfo">				
+<mapper
+	namespace="com.ssafy.happyhouse.recommend.model.mapper.RecommendMapper">
+	<select id="getRecommendInfo" resultType="RecommendInfo">
 		select *
-		
 		from recommendapt
-		</select>
+	</select>
+	<select id="selectAllApt" parameterType="string"
+		resultType="apt">
+		select
+		aptCode, aptName, sidoName, gugunName, dongName, leeName, dongCode, aptAddr,
+		codeSaleNm, codeHeatNm, aptTarea, aptDongCnt, aptdaCnt, aptTel,
+		aptFax, aptUrl, codeAptNm, doroJuso, hoCnt, codeMgrNm, codeHallNm,
+		aptUsedate, aptMarea, aptMparea_60, aptMparea_85, aptMparea_135,
+		aptMparea_136, privArea, codeGarbage, aptdEcnt, aptdPcnt, aptdPcntu,
+		codeNet, aptdCccnt, welfareFacility, aptdWtimebus, subwayLine,
+		subwayStation, aptdWtimesub, convenientFacility, educationFacility
+		from apt join aptinfo using(aptCode) join aptdetail
+		using(aptCode)
+		where aptCode= #{aptId}
+		order by aptName
+	</select>
 </mapper>
