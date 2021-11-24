@@ -2,27 +2,25 @@ package com.ssafy.happyhouse.map.model.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
-import com.ssafy.happyhouse.apt.model.Apt;
-import com.ssafy.happyhouse.apt.model.AptDeal;
-import com.ssafy.happyhouse.util.model.Category;
+import org.apache.ibatis.annotations.Param;
+
+import com.ssafy.happyhouse.apt.model.AptInfo;
+import com.ssafy.happyhouse.apt.model.AptInfoBasic;
+import com.ssafy.happyhouse.map.model.Zone;
+import com.ssafy.happyhouse.map.model.ZoneChild;
 
 public interface MapMapper {
 
-	List<Map<String, String>> selectSido() throws SQLException;
-	
-	List<Map<String, String>> selectGugunInSido(String sido) throws SQLException;
+	List<ZoneChild> selectSido() throws SQLException;
 
-	List<Map<String, String>> selectDongInGugun(String gugun) throws SQLException;
+	List<ZoneChild> selectGugunInSido(String sido) throws SQLException;
 
-	List<Apt> selectAptInDong(String dong) throws SQLException;
-	
-//	List<AptDeal> selectDealInApt(String )
-	
-	List<Apt> selectAllApt() throws SQLException;
+	List<ZoneChild> selectDongInGugun(String gugun) throws SQLException;
 
-	List<Category> getCategory() throws SQLException;
-	
+	List<AptInfo> selectAptInDong(String dong) throws SQLException;
 
+	Zone selectCntForParent(@Param("parent") String parent, @Param("len") int len) throws SQLException;
+
+	List<AptInfoBasic> selectAptBasicList(@Param("parent") String parent, @Param("len") int len) throws SQLException;
 }

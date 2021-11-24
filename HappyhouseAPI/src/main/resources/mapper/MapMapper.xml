@@ -5,35 +5,22 @@
 <mapper
 	namespace="com.ssafy.happyhouse.map.model.mapper.MapMapper">
 
-	<select id="selectCntInSido" parameterType="string"
-		resultType="hashmap">
+	<select id="selectCntForParent" resultType="zone">
 		select count(*)
 		totalCnt, sum(aptdaCnt) aptCnt
 		from apt join
 		aptinfo using(aptcode)
-		where left(dongcode, 2) = #{sido}
+		where left(dongcode, #{len}) = #{parent}
 	</select>
-
-	<select id="selectCntInGugun" parameterType="string"
-		resultType="hashmap">
-		select count(*)
-		totalCnt, sum(aptdaCnt) aptCnt
-		from apt join
-		aptinfo using(aptcode)
-		where left(dongcode, 5) = #{gugun}
-	</select>
-
-	<select id="selectCntInDong" parameterType="string"
-		resultType="hashmap">
-		select count(*)
-		totalCnt, sum(aptdaCnt) aptCnt
-		from apt join
-		aptinfo using(aptcode)
-		where left(dongcode, 8) = #{dong}
+	
+	<select id="selectAptBasicList" resultType="aptinfobasic">
+		select aptCode, aptName, a.dongCode, aptAddr,
+		aptDongCnt, aptdaCnt from apt a join aptinfo using(aptcode) where
+		left(a.dongcode, #{len}) = #{parent} limit 5
 	</select>
 
 	<select id="selectAptInDong" parameterType="string"
-		resultType="apt">
+		resultType="aptinfo">
 		select
 		aptCode, aptName, sidoName, gugunName, dongName,
 		leeName, dongCode, aptAddr,
@@ -52,33 +39,12 @@
 		from apt join aptinfo
 		using(aptCode) join aptdetail
 		using(aptCode)
-		where dongCode = #{dong}
+		where left(dongCode, 8) =
+		#{dong}
 		order by aptName
 	</select>
 
-	<select id="selectAllApt" resultType="apt">
-		select
-		aptCode, aptName,
-		sidoName, gugunName, dongName, leeName, dongCode, aptAddr,
-		codeSaleNm,
-		codeHeatNm, aptTarea, aptDongCnt, aptdaCnt, aptTel,
-		aptFax, aptUrl,
-		codeAptNm, doroJuso, hoCnt, codeMgrNm, codeHallNm,
-		aptUsedate,
-		aptMarea, aptMparea_60, aptMparea_85, aptMparea_135,
-		aptMparea_136,
-		privArea, codeGarbage, aptdEcnt, aptdPcnt, aptdPcntu,
-		codeNet,
-		aptdCccnt, welfareFacility, aptdWtimebus, subwayLine,
-		subwayStation,
-		aptdWtimesub, convenientFacility, educationFacility
-		from apt join
-		aptinfo using(aptCode) join aptdetail
-		using(aptCode)
-		order by aptName
-	</select>
-
-	<select id="selectSido" resultType="hashmap">
+	<select id="selectSido" resultType="zonechild">
 		select left(dongCode, 2)
 		code, sidoName name, round(avg(dealAmount/dealArea)) areaAvg,
 		round(avg(dealAmount))
@@ -89,22 +55,28 @@
 	</select>
 
 	<select id="selectGugunInSido" parameterType="string"
-		resultType="hashmap">
-		select left(dongCode, 5) code, gugunName name,
-		round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount)) amtAvg
+		resultType="zonechild">
+		select left(dongCode, 5) code, gugunName
+		name,
+		round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount))
+		amtAvg
 		from aptdeal
-		a join guguncode s on left(dongCode, 5) = s.gugunCode
-		group by
-		left(dongCode, 5) having left(code, 2) = #{sido} order by code
+		a join guguncode s on left(dongCode, 5) =
+		s.gugunCode where
+		left(dongCode, 2) = #{sido}
+		group by left(dongCode, 5) order by code
 	</select>
 
 	<select id="selectDongInGugun" parameterType="string"
-		resultType="hashmap">
-		select left(a.dongCode, 8) code, dongName name,
-		round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount)) amtAvg
+		resultType="zonechild">
+		select left(a.dongCode, 8) code, dongName
+		name,
+		round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount))
+		amtAvg
 		from aptdeal a join dongcode d on left(a.dongCode, 8) =
-		left(d.dongCode, 8) group by left(d.dongCode, 8) having left(code, 5)
-		= #{gugun} order by code
+		left(d.dongCode, 8) where left(a.dongCode, 5)
+		= #{gugun} group by
+		left(d.dongCode, 8) order by code
 	</select>
 
 </mapper>

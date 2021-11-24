@@ -1,6 +1,6 @@
 package com.ssafy.happyhouse.recommend.model;
 
-import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptInfo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +10,9 @@ import lombok.Setter;
 public class ReommendAptInfo {
 	private String itemId;
 	private float score;
-	private Apt apt;
+	private AptInfo apt;
 	
-	public ReommendAptInfo(Apt apt, String itemId, float score) {
+	public ReommendAptInfo(AptInfo apt, String itemId, float score) {
 		this.apt = apt;
 		this.itemId = itemId;
 		this.score = score;

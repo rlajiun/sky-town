@@ -7,7 +7,7 @@
 		from recommendapt
 	</select>
 	<select id="selectAllApt" parameterType="string"
-		resultType="apt">
+		resultType="aptinfo">
 		select
 		aptCode, aptName, sidoName, gugunName, dongName, leeName, dongCode, aptAddr,
 		codeSaleNm, codeHeatNm, aptTarea, aptDongCnt, aptdaCnt, aptTel,

@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptInfo;
 import com.ssafy.happyhouse.recommend.model.RecommendInfo;
 import com.ssafy.happyhouse.recommend.model.ReommendAptInfo;
 import com.ssafy.happyhouse.recommend.model.service.RecommendService;
@@ -106,7 +106,7 @@ public class UserBasedRecommendCsvGrandeController {
 			// 여기서 item 에 해당하는 상세 정보 가지고 와서 json 다시 만들기
 			List<ReommendAptInfo> recommendAptList = new ArrayList<>();
 			for(int i=0;i<aptIdLists.size();i++) {
-				Apt aptInfo = recomService.selectAptInfo("A"+aptIdLists.get(i).toString());
+				AptInfo aptInfo = recomService.selectAptInfo("A"+aptIdLists.get(i).toString());
 				ReommendAptInfo rInfo = new ReommendAptInfo();
 				rInfo.setApt(aptInfo);
 				rInfo.setItemId(Long.toString(recommendations.get(i).getItemID()));

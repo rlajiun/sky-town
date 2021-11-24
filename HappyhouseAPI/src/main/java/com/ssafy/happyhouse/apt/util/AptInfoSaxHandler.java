@@ -2,7 +2,7 @@ package com.ssafy.happyhouse.apt.util;
 
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptInfo;
 
 /**
  * 아파트 기본 정보를 읽어 파싱하는 핸들러 클래스
@@ -10,11 +10,11 @@ import com.ssafy.happyhouse.apt.model.Apt;
 public class AptInfoSaxHandler extends DefaultHandler {
 
 	/** 아파트 정보를 담는다 */
-	private Apt apt;
+	private AptInfo apt;
 	/** 태그 바디 정보를 임시로 저장 */
 	private String temp;
 
-	public AptInfoSaxHandler(Apt apt) {
+	public AptInfoSaxHandler(AptInfo apt) {
 		this.apt = apt;
 	}
 
@@ -79,7 +79,7 @@ public class AptInfoSaxHandler extends DefaultHandler {
 		temp = new String(ch, start, length);
 	}
 
-	public Apt getApt() {
+	public AptInfo getApt() {
 		return apt;
 	}
 

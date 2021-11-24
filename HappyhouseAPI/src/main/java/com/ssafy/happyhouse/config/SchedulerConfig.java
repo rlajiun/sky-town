@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.ssafy.happyhouse.apt.model.Apt;
+import com.ssafy.happyhouse.apt.model.AptInfo;
 import com.ssafy.happyhouse.apt.model.AptDeal;
 import com.ssafy.happyhouse.apt.model.service.AptService;
 import com.ssafy.happyhouse.apt.util.AptDealSaxParser;
@@ -27,12 +27,12 @@ public class SchedulerConfig {
 	@Autowired
 	private AptService aptService;
 	private int totalCount = 1;
-	private List<Apt> aptList;
+	private List<AptInfo> aptList;
 	
 //	@Scheduled(fixedDelay = 1000*60*60*24) 
 	public void aptDealUpdateTask() throws Exception {
 		System.out.println("시작");
-		List<String> codes = aptService.selectGugunCodeList();
+		List<String> codes = aptService.getGugunCodeList();
 		int mon = 11;
 		
 		for (int i = 0; i < codes.size(); i++) {
@@ -74,7 +74,7 @@ public class SchedulerConfig {
 	@Scheduled(cron = "0 0 0 1 * ?", zone = "Asia/Seoul") // 매월 1일 정오에 실행
 	public void aptUpdateTask() throws InterruptedException, IOException {
 		System.out.println("시작");
-		aptList = new ArrayList<Apt>();
+		aptList = new ArrayList<AptInfo>();
 		for(int i = 1; i <= totalCount / 1000 + 1; i++) {
 			StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1613000/AptListService2/getTotalAptList"); /* URL */
 			urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey); /* Service Key */
@@ -90,7 +90,7 @@ public class SchedulerConfig {
 			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 				is = conn.getInputStream();
 				AptSaxParser parser = new AptSaxParser(is);
-				List<Apt> apt = parser.getAptList();
+				List<AptInfo> apt = parser.getAptList();
 				if (apt != null) {
 					aptList.addAll(apt);
 				}

@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class AptDeal {
-	private String dealCode;
 	private String dealAmount;
 	private int buildYear;
 	private int dealYear;
