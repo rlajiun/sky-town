@@ -21,4 +21,5 @@
 		where aptCode= #{aptId}
 		order by aptName
 	</select>
+	
 </mapper>
