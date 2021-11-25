@@ -49,14 +49,13 @@ public class AptServiceImpl implements AptService {
 		apt.setAptInfo(sqlSession.getMapper(AptMapper.class).selectApt(aptCode));
 		String aptName = apt.getAptInfo().getAptName();
 		String dong = apt.getAptInfo().getDongCode();
-		System.out.println("aptName: "+aptName);
-		System.out.println("dong: "+dong);
+//		System.out.println("aptName: "+aptName);
+//		System.out.println("dong: "+dong);
 		apt.setAptDealList(sqlSession.getMapper(AptMapper.class).selectAptDealList(aptName, dong));
-		System.out.println(sqlSession.getMapper(AptMapper.class).selectAptDealList(aptName, dong));
+//		System.out.println(sqlSession.getMapper(AptMapper.class).selectAptDealList(aptName, dong));
 		apt.setAptAvg(sqlSession.getMapper(AptMapper.class).selectAptAvg(aptName, dong));
-		System.out.println(sqlSession.getMapper(AptMapper.class).selectAptAvg(aptName, dong));
+//		System.out.println(sqlSession.getMapper(AptMapper.class).selectAptAvg(aptName, dong));
 		apt.setAptAvgForGroup(sqlSession.getMapper(AptMapper.class).selectAptAvgForGroup(aptName, dong));
-		System.out.println(sqlSession.getMapper(AptMapper.class).selectAptAvgForGroup(aptName, dong));
 		return apt;
 	}
 

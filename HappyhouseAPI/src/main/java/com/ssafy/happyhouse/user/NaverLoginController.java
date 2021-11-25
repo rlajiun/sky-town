@@ -3,26 +3,26 @@ package com.ssafy.happyhouse.user;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.simple.JSONValue;
-import org.springframework.stereotype.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +35,6 @@ import com.ssafy.happyhouse.user.model.service.JwtServiceImpl;
 import com.ssafy.happyhouse.user.model.service.UserServiceImpl;
 
 import io.swagger.annotations.ApiParam;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/naver")

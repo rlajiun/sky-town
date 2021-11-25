@@ -3,7 +3,6 @@ package com.ssafy.happyhouse.apt.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.mahout.math.Arrays;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
