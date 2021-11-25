@@ -1,6 +1,5 @@
 package com.ssafy.happyhouse.map.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.apt.model.AptInfo;
-import com.ssafy.happyhouse.apt.model.AptInfoBasic;
 import com.ssafy.happyhouse.map.model.Zone;
 import com.ssafy.happyhouse.map.model.ZoneChild;
 import com.ssafy.happyhouse.map.model.mapper.MapMapper;
@@ -43,11 +41,6 @@ public class MapServiceImpl implements MapService {
 		zone.setAptBasicList(sqlSession.getMapper(MapMapper.class).selectAptBasicList(parent, len));
 		System.out.println(zone);
 		return zone;
-	}
-
-	@Override
-	public List<AptInfoBasic> getAptList(String parent) throws SQLException {
-		return sqlSession.getMapper(MapMapper.class).selectAptBasicList(parent, parent.length());
 	}
 
 }

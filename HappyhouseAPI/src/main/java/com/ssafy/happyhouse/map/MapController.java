@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.happyhouse.apt.model.AptInfoBasic;
 import com.ssafy.happyhouse.map.model.Zone;
 import com.ssafy.happyhouse.map.model.ZoneChild;
 import com.ssafy.happyhouse.map.model.service.MapService;
@@ -36,10 +35,10 @@ public class MapController {
 	public ResponseEntity<Zone> dong(@RequestParam("gugun") String gugun) throws Exception {
 		return new ResponseEntity<Zone>(mapService.getZone(gugun, 5), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/list")
-	public ResponseEntity<List<AptInfoBasic>> aptList(@RequestParam("dong") String dong) throws Exception {
-		return new ResponseEntity<List<AptInfoBasic>>(mapService.getAptList(dong),
+	public ResponseEntity<Zone> aptList(@RequestParam("dong") String dong) throws Exception {
+		return new ResponseEntity<Zone>(mapService.getZone(dong, 8),
 				HttpStatus.OK);
 	}
 

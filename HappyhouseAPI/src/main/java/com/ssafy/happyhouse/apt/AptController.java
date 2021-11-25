@@ -23,7 +23,7 @@ public class AptController {
 
 	@GetMapping("/{aptCode}")
 	public ResponseEntity<Apt> apt(@PathVariable("aptCode") String aptCode) throws Exception {
-		System.out.println(aptService.getApt(aptCode));
+//		System.out.println(aptService.getApt(aptCode));
 		return new ResponseEntity<Apt>(aptService.getApt(aptCode), HttpStatus.OK);
 	}
 	

@@ -15,11 +15,11 @@
 	
 	<select id="selectAptBasicList" resultType="aptinfobasic">
 		select aptCode, aptName, dongCode, aptAddr,
-		aptDongCnt, aptdaCnt,
+		aptDongCnt, aptdaCnt, welfareFacility, aptdWtimesub,
 		amtAvg, areaAvg from apt join
         (select aptname, dongcode, round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount))
 		amtAvg, count(*) count from aptdeal where left(dongcode, #{len}) = #{parent} group by aptName, dongcode) deal
-        using(aptname, dongcode) join aptinfo using(aptcode) order by count desc limit 10
+        using(aptname, dongcode) join aptinfo using(aptcode) join aptdetail using(aptcode) order by count desc limit 10
 	</select>
 
 	<select id="selectAptInDong" parameterType="string"
