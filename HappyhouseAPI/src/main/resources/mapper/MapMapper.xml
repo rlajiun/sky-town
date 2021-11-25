@@ -14,9 +14,12 @@
 	</select>
 	
 	<select id="selectAptBasicList" resultType="aptinfobasic">
-		select aptCode, aptName, a.dongCode, aptAddr,
-		aptDongCnt, aptdaCnt from apt a join aptinfo using(aptcode) where
-		left(a.dongcode, #{len}) = #{parent} limit 5
+		select aptCode, aptName, dongCode, aptAddr,
+		aptDongCnt, aptdaCnt,
+		amtAvg, areaAvg from apt join
+        (select aptname, dongcode, round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount))
+		amtAvg, count(*) count from aptdeal where left(dongcode, #{len}) = #{parent} group by aptName, dongcode) deal
+        using(aptname, dongcode) join aptinfo using(aptcode) order by count desc limit 10
 	</select>
 
 	<select id="selectAptInDong" parameterType="string"
@@ -36,7 +39,7 @@
 		aptdWtimebus, subwayLine,
 		subwayStation, aptdWtimesub,
 		convenientFacility, educationFacility
-		from apt join aptinfo
+		from apt join aptdeal using(aptname, , dongcode) join aptinfo
 		using(aptCode) join aptdetail
 		using(aptCode)
 		where left(dongCode, 8) =
