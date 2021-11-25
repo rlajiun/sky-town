@@ -56,4 +56,8 @@ public class UserServiceImpl implements UserService {
 		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
 	}
 
+	public String getMemberId(String userEmail) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).getIdMember(userEmail);
+	}
+
 }

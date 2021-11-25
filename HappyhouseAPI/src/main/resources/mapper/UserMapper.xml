@@ -46,6 +46,14 @@
 		where
 		userid = #{userid}
 	</select>
+	
+	<select id="getIdMember" parameterType="String"
+		resultType="String">
+		select userid
+		from member
+		where
+		email = #{userEmail}
+	</select>
 
 	<update id="updateMember" parameterType="user">
 		update member

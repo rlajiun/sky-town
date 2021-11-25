@@ -9,13 +9,18 @@ import lombok.ToString;
 @ToString
 public class RecommendInfo {
 	private String userId;
+	private String userEmail;
 	private String itemId;
 	private int score;
 	
-	public RecommendInfo(String u, String i, int s) {
+	RecommendInfo(String u, String e, String i, int s){
 		this.userId = u;
-		itemId = i;
-		score = s;
+		this.userEmail = e;
+		this.itemId = i;
+		this.score = s;
 	}
-	public RecommendInfo() {}
+	
+	public RecommendInfo(){
+		
+	}
 }

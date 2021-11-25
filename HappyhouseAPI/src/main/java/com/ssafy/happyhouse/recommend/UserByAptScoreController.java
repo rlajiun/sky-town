@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.recommend.model.RecommendInfo;
 import com.ssafy.happyhouse.recommend.model.service.AptScoreService;
+import com.ssafy.happyhouse.user.model.service.UserServiceImpl;
 
 import lombok.AllArgsConstructor;
 
@@ -20,11 +21,17 @@ import lombok.AllArgsConstructor;
 public class UserByAptScoreController {
 	@Autowired
 	private final AptScoreService rservice;
+	
+	@Autowired
+	private UserServiceImpl userService;
 
 	@GetMapping
-	public void AptScore(RecommendInfo rinfo) throws SQLException {
+	public void AptScore(RecommendInfo rinfo) throws Exception {
 		RecommendInfo rciDto = new RecommendInfo();
-		rciDto.setUserId(rinfo.getUserId());
+		rciDto.setUserEmail(rinfo.getUserEmail());
+		//userId 는 userEmail 값으로 가져오기
+		String userId = userService.getMemberId(rinfo.getUserEmail());
+		rciDto.setUserId(userId);
 		rciDto.setItemId(rinfo.getItemId());
 		rciDto.setScore(rinfo.getScore());
 		System.out.println("rinfo.toString() "+rinfo.toString());

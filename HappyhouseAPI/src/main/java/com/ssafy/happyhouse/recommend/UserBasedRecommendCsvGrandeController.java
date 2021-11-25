@@ -53,12 +53,12 @@ public class UserBasedRecommendCsvGrandeController {
 		int resultCount = 0;
 		try {
 			BufferedWriter csvWriter = new BufferedWriter(new FileWriter(filePath, false));
-			String userid = list.get(0).getUserId();
+			//String userid = list.get(0).getUserId().split("@")[0];
 			for (RecommendInfo ri : list) {
-				if (!ri.getUserId().equals(userid)) {
-					csvWriter.newLine();
-					userid = ri.getUserId();
-				}
+//				if (!ri.getUserId().equals(userid)) {
+//					csvWriter.newLine();
+//					userid = ri.getUserId();
+//				}
 				csvWriter.write(ri.getUserId() + "");
 				csvWriter.write(",");
 				csvWriter.write(ri.getItemId().substring(1, ri.getItemId().length()) + "");
