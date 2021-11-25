@@ -107,6 +107,8 @@ public class NaverLoginController {
 			profile = profile.split("email")[1];
 			profile = profile.split(",")[0].split(":")[1];
 			userEmail = profile.substring(1, profile.length() - 1);
+			String userId = userEmail.split("@")[0];
+			String userPwd = userId;
 			System.out.println("email: " + userEmail);
 
 			// jwt 토큰 만들기
@@ -117,11 +119,16 @@ public class NaverLoginController {
 			resultMap.put("userEmail", userEmail);
 			status = HttpStatus.ACCEPTED;
 
-			//네이버로그인 정보로 로그인 시킴
-//			User user = new User();
-//			user.setEmail(userEmail);
-//			user.setUserName("송진우");
-//			userService.registerMember(user);
+			//네이버로그인 정보로 회원가입 시킴(유저의 정보가 없는 경우만!)
+			if(userService.idCheck(userId)==0) {
+				User user = new User();
+				user.setUserId(userId);
+				user.setUserPwd(userPwd);
+				user.setEmail(userEmail);
+				user.setUserName("송진우");
+				userService.registerMember(user);
+			}
+			
 		} else {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.ACCEPTED;

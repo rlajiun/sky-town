@@ -5,15 +5,15 @@
 	<select id="idCheck" parameterType="string" resultType="int">
 		select
 		count(userid)
-		from member
+		from user
 		where userId = #{userId}
 	</select>
 
 	<insert id="registerMember" parameterType="user">
 		insert into
-		user (username, email, joindate)
+		user (userid,username,userpwd ,email, joindate)
 		values
-		(#{userName} #{email}, now())
+		(#{userId}, #{userName}, #{userPwd}, #{email}, now())
 	</insert>
 
 	<select id="login" parameterType="map" resultType="user">
