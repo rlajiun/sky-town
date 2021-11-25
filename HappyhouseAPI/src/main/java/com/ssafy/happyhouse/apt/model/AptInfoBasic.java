@@ -14,5 +14,6 @@ public class AptInfoBasic {
 	private String aptAddr;
 	private String aptDongCnt;
 	private String aptdaCnt;
-	private AptAvg aptAvg;
+	private String areaAvg;
+	private String amtAvg;
 }

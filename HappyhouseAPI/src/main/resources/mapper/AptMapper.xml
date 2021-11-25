@@ -4,9 +4,12 @@
 	namespace="com.ssafy.happyhouse.apt.model.mapper.AptMapper">
 	
 	<select id="selectAptBasicList" resultType="aptinfobasic">
-		select aptCode, aptName, a.dongCode, aptAddr,
-		aptDongCnt, aptdaCnt from apt a join aptinfo using(aptcode) where
-		left(a.dongcode, #{len}) = #{parent}
+		select aptCode, aptName, dongCode, aptAddr,
+		aptDongCnt, aptdaCnt,
+		amtAvg, areaAvg from apt join
+        (select aptname, dongcode, round(avg(dealAmount/dealArea)) areaAvg, round(avg(dealAmount))
+		amtAvg, count(*) count from aptdeal where left(dongcode, #{len}) = #{parent} group by aptName, dongcode) deal
+        using(aptname, dongcode) join aptinfo using(aptcode) order by count desc
 	</select>
 
 	<select id="selectAptAvg"
