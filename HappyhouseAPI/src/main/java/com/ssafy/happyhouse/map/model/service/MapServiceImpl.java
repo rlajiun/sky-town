@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.apt.model.AptInfo;
+import com.ssafy.happyhouse.apt.model.mapper.AptMapper;
 import com.ssafy.happyhouse.map.model.Zone;
 import com.ssafy.happyhouse.map.model.ZoneChild;
 import com.ssafy.happyhouse.map.model.mapper.MapMapper;
@@ -38,7 +39,11 @@ public class MapServiceImpl implements MapService {
 			zone.setNextZoneList(sqlSession.getMapper(MapMapper.class).selectDongInGugun(parent));
 			break;
 		}
-		zone.setAptBasicList(sqlSession.getMapper(MapMapper.class).selectAptBasicList(parent, len));
+		if (len == 8) {
+			zone.setAptBasicList(sqlSession.getMapper(AptMapper.class).selectAptBasicList(parent, len));
+		}else {			
+			zone.setAptBasicList(sqlSession.getMapper(MapMapper.class).selectAptBasicList(parent, len));
+		}
 		System.out.println(zone);
 		return zone;
 	}
