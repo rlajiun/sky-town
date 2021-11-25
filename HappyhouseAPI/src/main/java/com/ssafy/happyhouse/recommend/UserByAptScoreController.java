@@ -27,6 +27,7 @@ public class UserByAptScoreController {
 		rciDto.setUserId(rinfo.getUserId());
 		rciDto.setItemId(rinfo.getItemId());
 		rciDto.setScore(rinfo.getScore());
+		System.out.println("rinfo.toString() "+rinfo.toString());
 		rservice.insertRecommendScore(rciDto);
 	}
 }
