@@ -43,7 +43,7 @@ public class NaverLoginController {
 
 	private String CLIENT_ID = "FssPbW4KG1cD9O8YXEhN"; // 애플리케이션 클라이언트 아이디값";
 	private String CLI_SECRET = "yX_9hprMxM"; // 애플리케이션 클라이언트 시크릿값";
-	private final static String REDIRECT_URI = "http://localhost:8080/naver/callback1";
+	private final static String REDIRECT_URI = "http://localhost:9999/naver/callback1";
 	private final static String SESSION_STATE = "oauth_state";
 	private static String userEmail = null;
 	private static String response = null;
@@ -135,7 +135,7 @@ public class NaverLoginController {
 //			model.addAttribute("res", "Login failed!");
 		}
 
-		URI redirectUri = new URI("http://localhost:8080/#/loginOk");
+		URI redirectUri = new URI("http://localhost:9999/#/loginOk");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("email", userEmail);
 		httpHeaders.setLocation(redirectUri);
@@ -215,7 +215,7 @@ public class NaverLoginController {
 		model.addAttribute("res", res);
 		session.invalidate();
 		System.out.println("토큰 잘 삭제됨 ~~~");
-		URI redirectUri = new URI("http://localhost:8080/");
+		URI redirectUri = new URI("http://localhost:9999/");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setLocation(redirectUri);
 
