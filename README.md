@@ -2,7 +2,7 @@
 > 공공데이터를 활용해 편리하게 원하는 집을 찾는 웹 프로젝트  
 
 ##
-추가???
+meta 안생기는지 확인
 
 ## Introduction
 ### Main Features
