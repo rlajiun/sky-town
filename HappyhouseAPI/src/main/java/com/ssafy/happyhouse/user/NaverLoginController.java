@@ -43,7 +43,7 @@ public class NaverLoginController {
 
 	private String CLIENT_ID = "FssPbW4KG1cD9O8YXEhN"; // 애플리케이션 클라이언트 아이디값";
 	private String CLI_SECRET = "yX_9hprMxM"; // 애플리케이션 클라이언트 시크릿값";
-	private final static String REDIRECT_URI = "http://localhost:8080/naver/callback1";
+	private final static String REDIRECT_URI = "http://localhost:9999/naver/callback1";
 	private final static String SESSION_STATE = "oauth_state";
 	private static String userEmail = null;
 	private static String response = null;
@@ -53,21 +53,7 @@ public class NaverLoginController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
-	// 로그인 화면이 있는 페이지 컨트롤 -> 이부분 나중에 vue 로 바꾸기
 	// 1. 네아로 연동 url 요청 - 네이버로그인 url 생성해서 사용자는 로그인 인증 + 네아로 연동 동의과정 수행
-//	@GetMapping
-//	public String testNaver(HttpSession session, Model model)
-//			throws UnsupportedEncodingException, UnknownHostException {
-//		String redirectURI = URLEncoder.encode("http://localhost:9999/naver/login/oauth/code", "UTF-8"); //사용자가 로그인 연동에 동의 하였을 경우 동의 정보를 포함하여 callback url 전송
-//		SecureRandom random = new SecureRandom();
-//		String state = new BigInteger(130, random).toString();
-//		String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";//네아로 연동 url 요청
-//		apiURL += String.format("&client_id=%s&redirect_uri=%s&state=%s", CLIENT_ID, redirectURI, state);
-//		session.setAttribute("state", state);
-//		model.addAttribute("apiURL", apiURL);
-//		return "test-naver";
-//	}
-
 	// 2. 위에서 설정 해 놓은 url 처리하는 컨트롤러
 	// 3. 인증 토큰으로 access token 으로 교환하기
 	@Autowired
@@ -135,7 +121,7 @@ public class NaverLoginController {
 //			model.addAttribute("res", "Login failed!");
 		}
 
-		URI redirectUri = new URI("http://localhost:8080/#/loginOk");
+		URI redirectUri = new URI("http://localhost:9999/#/loginOk");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("email", userEmail);
 		httpHeaders.setLocation(redirectUri);
@@ -215,7 +201,7 @@ public class NaverLoginController {
 		model.addAttribute("res", res);
 		session.invalidate();
 		System.out.println("토큰 잘 삭제됨 ~~~");
-		URI redirectUri = new URI("http://localhost:8080/");
+		URI redirectUri = new URI("http://localhost:9999/");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setLocation(redirectUri);
 
