@@ -177,7 +177,6 @@ Skytown
                             HouseInfoDto.java
                             News.java
 ```
-## View Structure
 
 <br>
 
