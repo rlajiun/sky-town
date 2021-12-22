@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.user.model.User;
 import com.ssafy.happyhouse.user.model.service.JwtServiceImpl;
+import com.ssafy.happyhouse.user.model.service.NaverOAuthService;
 import com.ssafy.happyhouse.user.model.service.UserServiceImpl;
 
 import io.swagger.annotations.ApiParam;
@@ -61,50 +63,45 @@ public class NaverLoginController {
 	
 	@Autowired
 	private UserServiceImpl userService;
-
-	@RequestMapping("/callback")
+	
+	private final NaverOAuthService oAuthService = new NaverOAuthService();
+	
+	
+	//리1.vue 에서 /auth/naver 로 요청시
+	//네이버 로그인폼으로 리다이렉트 해주는 controller 분리
+	@GetMapping
+	public void naverLogin(HttpServletRequest request, HttpServletResponse response) {
+		final String loginUrl = oAuthService.getRequestLoginUrl();
+		try {
+			response.sendRedirect(loginUrl);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//리3. 콜백에 대한 처리 분리
+	//
+	@GetMapping("/callback")
 	public ResponseEntity<Map<String, Object>> naverCallback(HttpSession session, HttpServletRequest request, Model model,
 			HttpServletResponse httpServletResponse) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
 		String code = request.getParameter("code");
 		String state = request.getParameter("state");
-		String redirectURI = URLEncoder.encode("http://localhost:9999/naver/callback1", "UTF-8");
-		String apiURL;
-		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
-		apiURL += "client_id=" + CLIENT_ID;
-		apiURL += "&client_secret=" + CLI_SECRET;
-		apiURL += "&redirect_uri=" + redirectURI;
-		apiURL += "&code=" + code;
-		apiURL += "&state=" + state;
-		System.out.println("apiURL=" + apiURL);
-		String res = requestToServer(apiURL);
+		final String apiURL = oAuthService.getApiUrl(code, state);
+		String res = requestToServer(apiURL);////access-token, refresh-token 정보 얻어옴
 		String profile = null;
-
+		HttpStatus status = null;
 		if (res != null && !res.equals("")) {
-//			model.addAttribute("res", res);
+			//1)유저 profile 얻어오기
 			Map<String, Object> parsedJson = new JSONParser(res).parseObject();
-			System.out.println("parsedJson" + parsedJson);
-//			session.setAttribute("currentUser", res);
-//			session.setAttribute("currentAT", parsedJson.get("access_token"));
-//			session.setAttribute("currentRT", parsedJson.get("refresh_token"));
 			profile = getProfileFromNaver(parsedJson.get("access_token").toString());
-
 			profile = profile.split("email")[1];
 			profile = profile.split(",")[0].split(":")[1];
 			userEmail = profile.substring(1, profile.length() - 1);
 			String userId = userEmail.split("@")[0];
 			String userPwd = userId;
-			System.out.println("email: " + userEmail);
-
-			// jwt 토큰 만들기
-			token = jwtService.create("userid", userEmail, "access-token");// key, data, subject
-			logger.debug("로그인 토큰정보 : {}", token);
-			resultMap.put("access-token", token);
-			resultMap.put("message", SUCCESS);
-			resultMap.put("userEmail", userEmail);
-			status = HttpStatus.ACCEPTED;
-
+			//2) 없는 유저라면 회원가입 시키기
+			
 			//네이버로그인 정보로 회원가입 시킴(유저의 정보가 없는 경우만!)
 			if(userService.idCheck(userId)==0) {
 				User user = new User();
@@ -115,19 +112,97 @@ public class NaverLoginController {
 				userService.registerMember(user);
 			}
 			
-		} else {
-			resultMap.put("message", FAIL);
+			//3) jwt 토큰 발급
+			makeJWTToken();
 			status = HttpStatus.ACCEPTED;
-//			model.addAttribute("res", "Login failed!");
+			
+		}else {
+			
 		}
-
+		
 		URI redirectUri = new URI("http://localhost:9999/#/loginOk");
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("email", userEmail);
 		httpHeaders.setLocation(redirectUri);
-
 		return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	
+
+//	@RequestMapping("/callback")
+//	public ResponseEntity<Map<String, Object>> naverCallback(HttpSession session, HttpServletRequest request, Model model,
+//			HttpServletResponse httpServletResponse) throws Exception {
+//		Map<String, Object> resultMap = new HashMap<>();
+//		HttpStatus status = null;
+//		String code = request.getParameter("code");
+//		String state = request.getParameter("state");
+//		String redirectURI = URLEncoder.encode("http://localhost:9999/naver/callback1", "UTF-8");
+//		String apiURL;
+//		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
+//		apiURL += "client_id=" + CLIENT_ID;
+//		apiURL += "&client_secret=" + CLI_SECRET;
+//		apiURL += "&redirect_uri=" + redirectURI;
+//		apiURL += "&code=" + code;
+//		apiURL += "&state=" + state;
+//		System.out.println("apiURL=" + apiURL);
+//		
+//		String res = requestToServer(apiURL);
+//		System.out.println("requestToServer 역할: "+res); //access-token, refresh-token 정보 얻어옴
+//		String profile = null;
+//
+//		if (res != null && !res.equals("")) {
+//			Map<String, Object> parsedJson = new JSONParser(res).parseObject();
+//			System.out.println("parsedJson" + parsedJson);
+//			profile = getProfileFromNaver(parsedJson.get("access_token").toString());
+//
+//			//? service 로 옮겨야 하나??
+//			//네이버에서 받은 프로파일로 데이터 가공해 email, id, pwd 알아내기
+//			profile = profile.split("email")[1];
+//			profile = profile.split(",")[0].split(":")[1];
+//			userEmail = profile.substring(1, profile.length() - 1);
+//			String userId = userEmail.split("@")[0];
+//			String userPwd = userId;
+//			System.out.println("email: " + userEmail);
+//			//네이버로그인 정보로 회원가입 시킴(유저의 정보가 없는 경우만!)
+//			if(userService.idCheck(userId)==0) {
+//				User user = new User();
+//				user.setUserId(userId);
+//				user.setUserPwd(userPwd);
+//				user.setEmail(userEmail);
+//				user.setUserName("송진우");
+//				userService.registerMember(user);
+//			}
+//
+//			// jwt 토큰 만들기
+//			token = jwtService.create("userid", userEmail, "access-token");// key, data, subject
+//			logger.debug("로그인 토큰정보 : {}", token);
+//			resultMap.put("access-token", token);
+//			resultMap.put("message", SUCCESS);
+//			resultMap.put("userEmail", userEmail);
+//			status = HttpStatus.ACCEPTED;
+//
+//			
+//		} else {
+//			resultMap.put("message", FAIL);
+//			status = HttpStatus.ACCEPTED;
+//		}
+//
+//		URI redirectUri = new URI("http://localhost:9999/#/loginOk");
+//		HttpHeaders httpHeaders = new HttpHeaders();
+//		httpHeaders.set("email", userEmail);
+//		httpHeaders.setLocation(redirectUri);
+//
+//		return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+//	}
+
+	
+	private void makeJWTToken() {
+		Map<String, Object> resultMap = new HashMap<>();
+		token = jwtService.create("userid", userEmail, "access-token");// key, data, subject
+		logger.debug("로그인 토큰정보 : {}", token);
+//		resultMap.put("access-token", token);
+//		resultMap.put("message", SUCCESS);
+//		resultMap.put("userEmail", userEmail);
 	}
 
 	@RequestMapping("/getuserlogin")
@@ -171,49 +246,47 @@ public class NaverLoginController {
 	
 
 	// 통신 갱신 요청 페이지 컨트롤러
-	@RequestMapping("/refreshToken")
-	public String refreshToken(HttpSession session, HttpServletRequest request, Model model, String refreshToken)
-			throws IOException, ParseException {
-		String apiURL;
-		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=refresh_token&";
-		apiURL += "client_id=" + CLIENT_ID;
-		apiURL += "&client_secret=" + CLI_SECRET;
-		apiURL += "&refresh_token=" + refreshToken;
-		System.out.println("apiURL=" + apiURL);
-		String res = requestToServer(apiURL);
-		model.addAttribute("res", res);
-		session.invalidate();
-		return "test-naver-callback";
-	}
+//	@RequestMapping("/refreshToken")
+//	public String refreshToken(HttpSession session, HttpServletRequest request, Model model, String refreshToken)
+//			throws IOException, ParseException {
+//		String apiURL;
+//		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=refresh_token&";
+//		apiURL += "client_id=" + CLIENT_ID;
+//		apiURL += "&client_secret=" + CLI_SECRET;
+//		apiURL += "&refresh_token=" + refreshToken;
+//		System.out.println("apiURL=" + apiURL);
+//		String res = requestToServer(apiURL);
+//		model.addAttribute("res", res);
+//		session.invalidate();
+//		return "test-naver-callback";
+//	}
 
 	// 토큰 삭제 컨트롤러
-	@RequestMapping("/deleteToken")
-	public ResponseEntity<Map<String, Object>> deleteToken(HttpSession session, HttpServletRequest request, Model model)
-			throws IOException, URISyntaxException {
-		String apiURL;
-		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=delete&";
-		apiURL += "client_id=" + CLIENT_ID;
-		apiURL += "&client_secret=" + CLI_SECRET;
-		apiURL += "&access_token=" + request.getHeader("access-token");
-		apiURL += "&service_provider=NAVER";
-		System.out.println("apiURL=" + apiURL);
-		String res = requestToServer(apiURL);
-		model.addAttribute("res", res);
-		session.invalidate();
-		System.out.println("토큰 잘 삭제됨 ~~~");
-		URI redirectUri = new URI("http://localhost:9999/");
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setLocation(redirectUri);
-
-		return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
-	}
+//	@RequestMapping("/deleteToken")
+//	public ResponseEntity<Map<String, Object>> deleteToken(HttpSession session, HttpServletRequest request, Model model)
+//			throws IOException, URISyntaxException {
+//		String apiURL;
+//		apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=delete&";
+//		apiURL += "client_id=" + CLIENT_ID;
+//		apiURL += "&client_secret=" + CLI_SECRET;
+//		apiURL += "&access_token=" + request.getHeader("access-token");
+//		apiURL += "&service_provider=NAVER";
+//		System.out.println("apiURL=" + apiURL);
+//		String res = requestToServer(apiURL);
+//		model.addAttribute("res", res);
+//		session.invalidate();
+//		System.out.println("토큰 잘 삭제됨 ~~~");
+//		URI redirectUri = new URI("http://localhost:9999/");
+//		HttpHeaders httpHeaders = new HttpHeaders();
+//		httpHeaders.setLocation(redirectUri);
+//
+//		return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+//	}
 
 	// 액세스 토큰으로 네이버에서 프로필 받기
-	@ResponseBody
 	@RequestMapping("/getProfile")
 	public String getProfileFromNaver(String accessToken) throws IOException {
 		// 네이버 로그인 접근 토큰;
-		System.out.println("잘 오나??");
 		String apiURL = "https://openapi.naver.com/v1/nid/me";
 		String headerStr = "Bearer " + accessToken; // Bearer 다음에 공백 추가
 		String res = requestToServer(apiURL, headerStr);
