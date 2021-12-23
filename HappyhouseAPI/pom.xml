@@ -34,15 +34,10 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
-		<!--<dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
-		</dependency>-->
-		<dependency> 
-			<groupId>mysql</groupId> 
-			<artifactId>mysql-connector-java</artifactId> 
-			<scope>runtime</scope> 
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -159,51 +154,55 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt</artifactId>
-    <version>0.9.1</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
-<dependency>
-    <groupId>com.auth0</groupId>
-    <artifactId>java-jwt</artifactId>
-    <version>3.1.0</version>
-</dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.8.9</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson -->
-<dependency>
-    <groupId>com.squareup.retrofit2</groupId>
-    <artifactId>converter-gson</artifactId>
-    <version>2.9.0</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-<dependency>
-    <groupId>javax.mail</groupId>
-    <artifactId>javax.mail-api</artifactId>
-    <version>1.6.2</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-mail</artifactId>
-    <version>2.6.0</version>
-</dependency>
-
+		<dependency>
+			<groupId>com.squareup.retrofit2</groupId>
+			<artifactId>converter-gson</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+<!-- 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency> -->
 		
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt -->
-
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
+		<!-- <dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-junit-jupiter</artifactId>
+		    <version>2.17.0</version>
+		    <scope>test</scope>
+		</dependency> -->
 		
-
-		<!-- google only -->
-		<!-- <dependency> <groupId>org.springframework.social</groupId> <artifactId>spring-social-google</artifactId> 
-			<version>1.0.0.REALEASE</version> </dependency> -->
-
-
-
 
 	</dependencies>
 

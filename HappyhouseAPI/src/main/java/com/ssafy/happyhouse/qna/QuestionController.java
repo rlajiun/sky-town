@@ -82,14 +82,14 @@ public class QuestionController {
 	}
 	
 	@ApiOperation(value = "글번호에 해당하는 답글의 정보를 반환한다.", response = Answer.class)
-	@GetMapping("{no}")
+	@GetMapping("ans/{no}")
 	public ResponseEntity<Answer> detailAnswer(@PathVariable int no) {
 		logger.debug("detailAnswer - 호출");
 		return new ResponseEntity<Answer>(qnaService.detailAnswer(no), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "새로운 답글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PostMapping
+	@PostMapping("ans")
 	public ResponseEntity<String> writeAnswer(@RequestBody Answer answer) {
 		logger.debug("writeAnswer - 호출");
 		if (qnaService.writeAnswer(answer)) {
@@ -99,7 +99,7 @@ public class QuestionController {
 	}
 
 	@ApiOperation(value = "글번호에 해당하는 답글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@PutMapping
+	@PutMapping("ans")
 	public ResponseEntity<String> updateAnswer(@RequestBody Answer answer) {
 		logger.debug("updateAnswer - 호출");
 		logger.debug("" + answer);
@@ -111,7 +111,7 @@ public class QuestionController {
 	}
 
 	@ApiOperation(value = "글번호에 해당하는 답글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@DeleteMapping("{no}")
+	@DeleteMapping("ans/{no}")
 	public ResponseEntity<String> deleteAnswer(@PathVariable int no) {
 		logger.debug("deleteAnswer - 호출");
 		if (qnaService.deleteAnswer(no)) {
