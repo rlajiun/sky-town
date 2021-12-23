@@ -4,6 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * 간소화된 아파트 정보를 가지는 클래스
+ * 
+ * @author Kim Jiun
+ *
+ */
 @Getter
 @Setter
 @ToString

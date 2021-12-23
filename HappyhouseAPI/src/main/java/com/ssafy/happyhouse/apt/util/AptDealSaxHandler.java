@@ -10,6 +10,9 @@ import com.ssafy.happyhouse.apt.model.AptDeal;
 
 /**
  * 아파트 매매 정보를 읽어 파싱하는 핸들러 클래스
+ * 
+ * @author Kim Jiun
+ *
  */
 public class AptDealSaxHandler extends DefaultHandler {
 

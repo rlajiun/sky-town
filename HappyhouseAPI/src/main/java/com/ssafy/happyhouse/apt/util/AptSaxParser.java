@@ -9,7 +9,11 @@ import javax.xml.parsers.SAXParserFactory;
 import com.ssafy.happyhouse.apt.model.AptInfo;
 
 import lombok.Getter;
-
+/**
+ * 
+ * @author Kim Jiun
+ *
+ */
 @Getter
 public class AptSaxParser {
 	private List<AptInfo> aptList;
